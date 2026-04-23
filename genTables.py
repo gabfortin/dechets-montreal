@@ -197,7 +197,7 @@ def build_html(data, territoires, annees, matieres):
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bilan massique — Matières résiduelles · Montréal</title>
-  <link rel="icon" type="image/svg+xml" href="img/recycle.svg">
+  <link rel="icon" type="image/png" href="img/favico.png">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
