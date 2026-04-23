@@ -403,6 +403,14 @@ def build_html(data, territoires, annees, matieres):
     }}
 
     footer a {{ color: #60a5fa; text-decoration: none; }}
+
+    @media (max-width: 600px) {{
+      .author {{
+        position: static;
+        justify-content: center;
+        margin-top: 1rem;
+      }}
+    }}
   </style>
 </head>
 <body>
