@@ -53,29 +53,53 @@
       text-decoration: underline;
     }
 
-    .legend {
+    .filters {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.5rem 1.25rem;
-      padding: 1.25rem 2rem;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
       border-bottom: 1px solid #1e293b;
       background: #0f172a;
     }
 
-    .legend-item {
+    .toggle-btn {
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 99px;
+      border: 1px solid #334155;
+      background: transparent;
+      color: #475569;
       font-size: 0.78rem;
-      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.15s;
     }
 
-    .legend-dot {
-      width: 10px;
-      height: 10px;
+    .toggle-btn::before {
+      content: '';
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
+      background: var(--color);
+      opacity: 0.3;
       flex-shrink: 0;
+      transition: opacity 0.15s;
+    }
+
+    .toggle-btn.active {
+      border-color: var(--color);
+      color: #e2e8f0;
+    }
+
+    .toggle-btn.active::before {
+      opacity: 1;
+    }
+
+    .toggle-btn:hover {
+      border-color: var(--color);
+      color: #e2e8f0;
     }
 
     .grid {
@@ -93,6 +117,18 @@
       border-radius: 14px;
       padding: 1.25rem 1.25rem 1rem;
       transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card--featured {
+      grid-column: 1 / -1;
+    }
+
+    .card--featured .chart-wrap {
+      height: 300px;
+    }
+
+    .card--featured .card-title {
+      font-size: 1.1rem;
     }
 
     .card:hover {
@@ -156,19 +192,19 @@
     <p class="source">Source : <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank">Données ouvertes — Ville de Montréal</a></p>
   </header>
 
-  <div class="legend">
-    <span class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Organiques</span><span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Recyclables</span>
+  <div class="filters">
+    <button class="toggle-btn active" data-label="Organiques" style="--color:#22c55e">Organiques</button><button class="toggle-btn active" data-label="Recyclables" style="--color:#3b82f6">Recyclables</button><button class="toggle-btn" data-label="CRD & encombrants" style="--color:#f97316">CRD & encombrants</button><button class="toggle-btn" data-label="RDD" style="--color:#a855f7">RDD</button>
   </div>
 
   <div class="grid">
     
-        <div class="card">
+        <div class="card card--featured">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Ahuntsic-Cartierville</h2>
-              <p class="card-sub">35,154 t en 2023</p>
+              <h2 class="card-title">Le Plateau-Mont-Royal</h2>
+              <p class="card-sub">38,600 t en 2023</p>
             </div>
-            <div class="card-badge">500 kt total</div>
+            <div class="card-badge">521 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_0"></canvas>
@@ -177,10 +213,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Anjou</h2>
-              <p class="card-sub">11,080 t en 2023</p>
+              <h2 class="card-title">Ahuntsic-Cartierville</h2>
+              <p class="card-sub">48,039 t en 2023</p>
             </div>
-            <div class="card-badge">162 kt total</div>
+            <div class="card-badge">681 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_1"></canvas>
@@ -189,10 +225,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Baie-d'Urfé</h2>
-              <p class="card-sub">659 t en 2024</p>
+              <h2 class="card-title">Anjou</h2>
+              <p class="card-sub">15,426 t en 2023</p>
             </div>
-            <div class="card-badge">24 kt total</div>
+            <div class="card-badge">202 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_2"></canvas>
@@ -201,10 +237,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Beaconsfield</h2>
-              <p class="card-sub">8,998 t en 2023</p>
+              <h2 class="card-title">Baie-d'Urfé</h2>
+              <p class="card-sub">1,217 t en 2024</p>
             </div>
-            <div class="card-badge">117 kt total</div>
+            <div class="card-badge">30 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_3"></canvas>
@@ -213,10 +249,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Côte-Saint-Luc</h2>
-              <p class="card-sub">9,637 t en 2023</p>
+              <h2 class="card-title">Beaconsfield</h2>
+              <p class="card-sub">12,814 t en 2023</p>
             </div>
-            <div class="card-badge">133 kt total</div>
+            <div class="card-badge">152 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_4"></canvas>
@@ -225,10 +261,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Côte-des-Neiges–Notre-Dame-de-Grâce</h2>
-              <p class="card-sub">42,784 t en 2023</p>
+              <h2 class="card-title">Côte-Saint-Luc</h2>
+              <p class="card-sub">13,422 t en 2023</p>
             </div>
-            <div class="card-badge">610 kt total</div>
+            <div class="card-badge">177 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_5"></canvas>
@@ -237,10 +273,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Dollard-des Ormeaux</h2>
-              <p class="card-sub">15,928 t en 2023</p>
+              <h2 class="card-title">Côte-des-Neiges–Notre-Dame-de-Grâce</h2>
+              <p class="card-sub">58,140 t en 2023</p>
             </div>
-            <div class="card-badge">228 kt total</div>
+            <div class="card-badge">832 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_6"></canvas>
@@ -249,10 +285,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Dorval</h2>
-              <p class="card-sub">6,527 t en 2023</p>
+              <h2 class="card-title">Dollard-des Ormeaux</h2>
+              <p class="card-sub">20,391 t en 2023</p>
             </div>
-            <div class="card-badge">87 kt total</div>
+            <div class="card-badge">275 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_7"></canvas>
@@ -261,10 +297,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Hampstead</h2>
-              <p class="card-sub">2,258 t en 2023</p>
+              <h2 class="card-title">Dorval</h2>
+              <p class="card-sub">9,594 t en 2023</p>
             </div>
-            <div class="card-badge">32 kt total</div>
+            <div class="card-badge">128 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_8"></canvas>
@@ -273,10 +309,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Kirkland</h2>
-              <p class="card-sub">7,424 t en 2023</p>
+              <h2 class="card-title">Hampstead</h2>
+              <p class="card-sub">649 t en 2024</p>
             </div>
-            <div class="card-badge">105 kt total</div>
+            <div class="card-badge">41 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_9"></canvas>
@@ -285,10 +321,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">L'Île-Bizard–Sainte-Geneviève</h2>
-              <p class="card-sub">7,234 t en 2023</p>
+              <h2 class="card-title">Kirkland</h2>
+              <p class="card-sub">9,447 t en 2023</p>
             </div>
-            <div class="card-badge">93 kt total</div>
+            <div class="card-badge">133 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_10"></canvas>
@@ -297,10 +333,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">LaSalle</h2>
-              <p class="card-sub">21,653 t en 2023</p>
+              <h2 class="card-title">L'Île-Bizard–Sainte-Geneviève</h2>
+              <p class="card-sub">9,521 t en 2023</p>
             </div>
-            <div class="card-badge">296 kt total</div>
+            <div class="card-badge">116 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_11"></canvas>
@@ -309,10 +345,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Lachine</h2>
-              <p class="card-sub">13,769 t en 2023</p>
+              <h2 class="card-title">LaSalle</h2>
+              <p class="card-sub">29,085 t en 2023</p>
             </div>
-            <div class="card-badge">196 kt total</div>
+            <div class="card-badge">520 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_12"></canvas>
@@ -321,10 +357,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">Le Plateau-Mont-Royal</h2>
-              <p class="card-sub">29,186 t en 2023</p>
+              <h2 class="card-title">Lachine</h2>
+              <p class="card-sub">18,218 t en 2023</p>
             </div>
-            <div class="card-badge">431 kt total</div>
+            <div class="card-badge">240 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_13"></canvas>
@@ -334,9 +370,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Le Sud-Ouest</h2>
-              <p class="card-sub">22,000 t en 2023</p>
+              <p class="card-sub">29,789 t en 2023</p>
             </div>
-            <div class="card-badge">302 kt total</div>
+            <div class="card-badge">441 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_14"></canvas>
@@ -346,9 +382,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Mercier–Hochelaga-Maisonneuve</h2>
-              <p class="card-sub">35,482 t en 2023</p>
+              <p class="card-sub">48,066 t en 2023</p>
             </div>
-            <div class="card-badge">529 kt total</div>
+            <div class="card-badge">657 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_15"></canvas>
@@ -358,9 +394,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Mont-Royal</h2>
-              <p class="card-sub">9,205 t en 2023</p>
+              <p class="card-sub">11,366 t en 2023</p>
             </div>
-            <div class="card-badge">115 kt total</div>
+            <div class="card-badge">137 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_16"></canvas>
@@ -370,9 +406,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Montréal-Est</h2>
-              <p class="card-sub">1,706 t en 2024</p>
+              <p class="card-sub">2,430 t en 2024</p>
             </div>
-            <div class="card-badge">24 kt total</div>
+            <div class="card-badge">31 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_17"></canvas>
@@ -382,9 +418,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Montréal-Nord</h2>
-              <p class="card-sub">25,010 t en 2023</p>
+              <p class="card-sub">34,267 t en 2023</p>
             </div>
-            <div class="card-badge">345 kt total</div>
+            <div class="card-badge">431 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_18"></canvas>
@@ -394,9 +430,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Montréal-Ouest</h2>
-              <p class="card-sub">1,755 t en 2024</p>
+              <p class="card-sub">2,177 t en 2024</p>
             </div>
-            <div class="card-badge">28 kt total</div>
+            <div class="card-badge">33 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_19"></canvas>
@@ -406,9 +442,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Outremont</h2>
-              <p class="card-sub">7,615 t en 2023</p>
+              <p class="card-sub">9,909 t en 2023</p>
             </div>
-            <div class="card-badge">103 kt total</div>
+            <div class="card-badge">140 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_20"></canvas>
@@ -418,9 +454,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Pierrefonds-Roxboro</h2>
-              <p class="card-sub">23,151 t en 2023</p>
+              <p class="card-sub">30,347 t en 2023</p>
             </div>
-            <div class="card-badge">303 kt total</div>
+            <div class="card-badge">372 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_21"></canvas>
@@ -430,9 +466,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Pointe-Claire</h2>
-              <p class="card-sub">14,471 t en 2023</p>
+              <p class="card-sub">18,249 t en 2023</p>
             </div>
-            <div class="card-badge">170 kt total</div>
+            <div class="card-badge">209 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_22"></canvas>
@@ -442,9 +478,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Rivière-des-Prairies–Pointe-aux-Trembles</h2>
-              <p class="card-sub">32,614 t en 2023</p>
+              <p class="card-sub">44,496 t en 2023</p>
             </div>
-            <div class="card-badge">454 kt total</div>
+            <div class="card-badge">679 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_23"></canvas>
@@ -454,9 +490,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Rosemont–La Petite-Patrie</h2>
-              <p class="card-sub">38,269 t en 2023</p>
+              <p class="card-sub">51,356 t en 2023</p>
             </div>
-            <div class="card-badge">550 kt total</div>
+            <div class="card-badge">786 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_24"></canvas>
@@ -466,9 +502,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Saint-Laurent</h2>
-              <p class="card-sub">26,692 t en 2023</p>
+              <p class="card-sub">35,392 t en 2023</p>
             </div>
-            <div class="card-badge">364 kt total</div>
+            <div class="card-badge">482 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_25"></canvas>
@@ -478,9 +514,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Saint-Léonard</h2>
-              <p class="card-sub">21,727 t en 2023</p>
+              <p class="card-sub">30,008 t en 2023</p>
             </div>
-            <div class="card-badge">309 kt total</div>
+            <div class="card-badge">386 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_26"></canvas>
@@ -490,9 +526,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Sainte-Anne-de-Bellevue</h2>
-              <p class="card-sub">1,799 t en 2024</p>
+              <p class="card-sub">2,419 t en 2024</p>
             </div>
-            <div class="card-badge">28 kt total</div>
+            <div class="card-badge">34 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_27"></canvas>
@@ -502,9 +538,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Senneville</h2>
-              <p class="card-sub">440 t en 2024</p>
+              <p class="card-sub">554 t en 2024</p>
             </div>
-            <div class="card-badge">7 kt total</div>
+            <div class="card-badge">8 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_28"></canvas>
@@ -514,9 +550,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Verdun</h2>
-              <p class="card-sub">18,311 t en 2023</p>
+              <p class="card-sub">24,331 t en 2023</p>
             </div>
-            <div class="card-badge">259 kt total</div>
+            <div class="card-badge">320 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_29"></canvas>
@@ -526,9 +562,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Ville-Marie</h2>
-              <p class="card-sub">26,270 t en 2023</p>
+              <p class="card-sub">35,565 t en 2023</p>
             </div>
-            <div class="card-badge">362 kt total</div>
+            <div class="card-badge">458 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_30"></canvas>
@@ -538,9 +574,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Villeray–Saint-Michel–Parc-Extension</h2>
-              <p class="card-sub">38,635 t en 2023</p>
+              <p class="card-sub">51,625 t en 2023</p>
             </div>
-            <div class="card-badge">546 kt total</div>
+            <div class="card-badge">831 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_31"></canvas>
@@ -550,9 +586,9 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">Westmount</h2>
-              <p class="card-sub">7,090 t en 2023</p>
+              <p class="card-sub">9,162 t en 2023</p>
             </div>
-            <div class="card-badge">102 kt total</div>
+            <div class="card-badge">125 kt total</div>
           </div>
           <div class="chart-wrap">
             <canvas id="chart_32"></canvas>
@@ -561,47 +597,68 @@
   </div>
 
   <footer>
-    Source : <a href="https://donnees.montreal.ca" target="_blank">Données ouvertes Montréal</a> · Ville de Montréal
+    Source : <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank">Données ouvertes Montréal</a> · Ville de Montréal
   </footer>
 
   <script>
   Chart.defaults.color = "#94a3b8";
-  (function() {
-    
-    new Chart(document.getElementById('chart_0'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [24056.0, 24419.0, 23136.0, 24372.0, 23780.0, 24000.0, 23707.0, 24014.0, 25006.0, 24577.0, 19328.0, 19371.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [20303.0, 20582.0, 19890.0, 19493.0, 19074.0, 18518.0, 18316.0, 17553.0, 17828.0, 18096.0, 15288.0, 15783.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_1'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [7704.0, 7829.0, 7578.0, 7657.0, 7500.0, 7542.0, 7341.0, 7448.0, 7830.0, 7622.0, 5900.0, 5747.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [6554.0, 6649.0, 6429.0, 6343.0, 6195.0, 6066.0, 6116.0, 6070.0, 6352.0, 6325.0, 5384.0, 5333.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_2'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1065.0, 1105.0, 1010.0, 1226.0, 1357.0, 1327.0, 1193.0, 1253.0, 1390.0, 1240.0, 1053.0, 1260.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [961.0, 978.0, 914.0, 956.0, 824.0, 733.0, 695.0, 689.0, 707.0, 675.0, 604.0, 603.0, 659.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_3'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [6032.0, 5770.0, 6225.0, 6642.0, 6152.0, 5852.0, 6834.0, 6331.0, 7313.0, 6462.0, 4921.0, 6112.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4486.0, 4477.0, 4256.0, 3716.0, 3379.0, 3397.0, 3214.0, 3136.0, 3412.0, 3245.0, 2834.0, 2886.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_4'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [6513.0, 6552.0, 6619.0, 6779.0, 6401.0, 6915.0, 6734.0, 6974.0, 7407.0, 7293.0, 5751.0, 5843.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4600.0, 4515.0, 4675.0, 4675.0, 4582.0, 4532.0, 4527.0, 4552.0, 4618.0, 4757.0, 3809.0, 3794.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_5'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [28909.0, 28994.0, 27876.0, 27412.0, 27602.0, 28084.0, 28661.0, 28036.0, 28484.0, 27200.0, 21452.0, 22414.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [25778.0, 25374.0, 24902.0, 24796.0, 24149.0, 23682.0, 23919.0, 24011.0, 24082.0, 23409.0, 20491.0, 20370.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_6'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [11259.0, 11695.0, 13082.0, 12072.0, 11726.0, 12025.0, 11791.0, 11732.0, 11518.0, 11779.0, 9277.0, 9630.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [8505.0, 8045.0, 7959.0, 7989.0, 7766.0, 7622.0, 7568.0, 7288.0, 7604.0, 7586.0, 6132.0, 6298.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_7'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4213.0, 4135.0, 4204.0, 4376.0, 4175.0, 4164.0, 3959.0, 4290.0, 4426.0, 4089.0, 3230.0, 3708.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [3492.0, 3410.0, 3404.0, 3390.0, 3272.0, 3246.0, 3136.0, 3032.0, 3211.0, 3243.0, 2770.0, 2819.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_8'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1500.0, 1455.0, 1300.0, 1412.0, 1327.0, 1322.0, 1490.0, 1531.0, 1819.0, 1629.0, 1250.0, 1267.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [1482.0, 1409.0, 1223.0, 1177.0, 1140.0, 1118.0, 1124.0, 1207.0, 1322.0, 1309.0, 975.0, 991.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_9'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4798.0, 5094.0, 5301.0, 5321.0, 5339.0, 5318.0, 5532.0, 6002.0, 6180.0, 5759.0, 4840.0, 4560.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4215.0, 4019.0, 3884.0, 3839.0, 3490.0, 3358.0, 3292.0, 3170.0, 3253.0, 3201.0, 2829.0, 2864.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_10'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4097.0, 4530.0, 4251.0, 4753.0, 4532.0, 4548.0, 4213.0, 4484.0, 5133.0, 4886.0, 3962.0, 4613.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [3820.0, 3807.0, 3589.0, 3631.0, 3419.0, 3255.0, 3105.0, 3050.0, 3231.0, 3013.0, 2201.0, 2621.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_11'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [12873.0, 13175.0, 13117.0, 12799.0, 12314.0, 12668.0, 13182.0, 13380.0, 14489.0, 13706.0, 11019.0, 11171.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12454.0, 12653.0, 12451.0, 12240.0, 12151.0, 12083.0, 12132.0, 11588.0, 12030.0, 11845.0, 10267.0, 10482.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_12'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [9367.0, 9765.0, 9346.0, 9433.0, 8939.0, 8972.0, 8843.0, 9214.0, 10327.0, 9902.0, 7773.0, 7616.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [7869.0, 7968.0, 7792.0, 7480.0, 7224.0, 7073.0, 7026.0, 6929.0, 7413.0, 7124.0, 6099.0, 6153.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_13'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [20470.0, 19690.0, 19748.0, 19112.0, 19064.0, 18452.0, 19270.0, 18815.0, 19233.0, 18217.0, 14955.0, 14703.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [20096.0, 19366.0, 18983.0, 18252.0, 18163.0, 17349.0, 17645.0, 16868.0, 16658.0, 16593.0, 14364.0, 14483.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_14'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [13543.0, 13088.0, 13578.0, 14090.0, 13688.0, 12715.0, 13214.0, 13600.0, 14208.0, 14239.0, 10817.0, 10986.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12334.0, 12413.0, 12331.0, 12357.0, 12349.0, 11887.0, 11983.0, 11669.0, 12395.0, 12672.0, 10918.0, 11014.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_15'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [23665.0, 23363.0, 23310.0, 24743.0, 24035.0, 25291.0, 23776.0, 23009.0, 24618.0, 23576.0, 19136.0, 17901.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [23025.0, 23333.0, 22934.0, 22558.0, 21746.0, 21080.0, 20449.0, 19988.0, 21216.0, 20611.0, 17795.0, 17581.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_16'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [5600.0, 5909.0, 5648.0, 6201.0, 6111.0, 5929.0, 6229.0, 6646.0, 6395.0, 6007.0, 5357.0, 6141.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4084.0, 4023.0, 3845.0, 3670.0, 3664.0, 3551.0, 3552.0, 3389.0, 3599.0, 3389.0, 2856.0, 3064.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_17'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [979.0, 949.0, 968.0, 1018.0, 1061.0, 1073.0, 1041.0, 1015.0, 1140.0, 1145.0, 868.0, 1025.0, 796.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [747.0, 751.0, 779.0, 804.0, 781.0, 807.0, 807.0, 819.0, 843.0, 873.0, 790.0, 811.0, 910.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_18'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [16983.0, 17660.0, 17370.0, 17390.0, 15007.0, 15214.0, 15197.0, 15538.0, 16363.0, 15955.0, 12577.0, 12821.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [13708.0, 13798.0, 13523.0, 13746.0, 12819.0, 12648.0, 12894.0, 12866.0, 13414.0, 13297.0, 11839.0, 12189.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_19'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1101.0, 1153.0, 1186.0, 1169.0, 1208.0, 1374.0, 1310.0, 1328.0, 1440.0, 1355.0, 1121.0, 1174.0, 967.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [1192.0, 1124.0, 942.0, 887.0, 844.0, 924.0, 897.0, 899.0, 921.0, 871.0, 749.0, 772.0, 788.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_20'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4993.0, 4880.0, 4976.0, 4922.0, 4633.0, 4872.0, 4735.0, 4876.0, 4925.0, 4684.0, 3745.0, 4307.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4467.0, 4447.0, 4202.0, 3990.0, 3914.0, 3832.0, 3862.0, 3702.0, 3801.0, 3860.0, 3269.0, 3308.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_21'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [12689.0, 13562.0, 13340.0, 13738.0, 13683.0, 14733.0, 14484.0, 15402.0, 17196.0, 16185.0, 13080.0, 14152.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12026.0, 12434.0, 11923.0, 11987.0, 11282.0, 10982.0, 10511.0, 10315.0, 10745.0, 10307.0, 8833.0, 8999.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_22'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [8472.0, 10249.0, 8003.0, 8591.0, 8083.0, 7525.0, 7631.0, 8312.0, 9467.0, 9033.0, 8278.0, 9530.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [6279.0, 6231.0, 6144.0, 5668.0, 5524.0, 5168.0, 5412.0, 5307.0, 5382.0, 5516.0, 4879.0, 4941.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_23'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [19833.0, 20695.0, 20529.0, 20755.0, 21322.0, 21100.0, 21222.0, 21641.0, 24902.0, 22870.0, 17966.0, 17426.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [18636.0, 18171.0, 17905.0, 17601.0, 16762.0, 16169.0, 16414.0, 16444.0, 17804.0, 17532.0, 15275.0, 15188.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_24'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [24054.0, 24684.0, 23803.0, 24183.0, 24461.0, 24217.0, 24717.0, 25720.0, 25736.0, 24227.0, 19496.0, 19697.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [24668.0, 25080.0, 23690.0, 22950.0, 22501.0, 21887.0, 21977.0, 21790.0, 22025.0, 21584.0, 18651.0, 18572.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_25'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [16579.0, 16987.0, 17028.0, 17054.0, 16510.0, 16992.0, 17168.0, 17699.0, 18955.0, 18199.0, 14423.0, 14669.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [14485.0, 14473.0, 14091.0, 13810.0, 12909.0, 13137.0, 13492.0, 13541.0, 13439.0, 14121.0, 11963.0, 12023.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_26'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [15465.0, 14987.0, 14813.0, 14969.0, 14031.0, 14051.0, 14167.0, 14834.0, 15471.0, 14981.0, 11593.0, 11251.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12195.0, 12070.0, 11802.0, 11835.0, 11610.0, 11379.0, 11341.0, 11679.0, 11749.0, 12036.0, 10219.0, 10476.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_27'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1071.0, 1086.0, 1218.0, 1264.0, 1161.0, 1264.0, 1262.0, 1445.0, 1356.0, 1223.0, 1017.0, 1252.0, 947.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [1239.0, 1085.0, 987.0, 952.0, 948.0, 913.0, 928.0, 935.0, 895.0, 907.0, 774.0, 778.0, 852.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_28'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [308.0, 401.0, 328.0, 369.0, 361.0, 391.0, 376.0, 493.0, 475.0, 429.0, 348.0, 437.0, 251.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [183.0, 164.0, 168.0, 222.0, 193.0, 198.0, 199.0, 186.0, 207.0, 197.0, 175.0, 180.0, 189.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_29'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [10489.0, 10381.0, 10636.0, 11005.0, 10920.0, 10930.0, 10597.0, 10805.0, 11450.0, 10762.0, 8710.0, 8611.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12072.0, 11854.0, 12035.0, 12000.0, 11507.0, 11359.0, 11322.0, 10840.0, 10905.0, 10908.0, 9357.0, 9700.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_30'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [15171.0, 14682.0, 14301.0, 14382.0, 14409.0, 15013.0, 16085.0, 15697.0, 15441.0, 15211.0, 12136.0, 12473.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [16983.0, 16828.0, 16418.0, 16043.0, 15824.0, 15982.0, 16022.0, 16078.0, 14423.0, 15089.0, 13313.0, 13797.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_31'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [26405.0, 27358.0, 27080.0, 27568.0, 26253.0, 26989.0, 26602.0, 25646.0, 26826.0, 25784.0, 20386.0, 20647.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [21083.0, 21096.0, 20906.0, 20499.0, 19882.0, 19487.0, 20058.0, 19751.0, 20427.0, 20343.0, 17326.0, 17988.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-    new Chart(document.getElementById('chart_32'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [5287.0, 5160.0, 5241.0, 5865.0, 5200.0, 5576.0, 5338.0, 4706.0, 5358.0, 4756.0, 3997.0, 4089.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [3854.0, 3706.0, 3642.0, 3559.0, 3426.0, 3468.0, 3448.0, 3380.0, 3550.0, 3403.0, 2986.0, 3001.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}});
-  })();
+  const allCharts = [];
+  
+    allCharts.push(new Chart(document.getElementById('chart_0'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [20470.0, 19690.0, 19748.0, 19112.0, 19064.0, 18452.0, 19270.0, 18815.0, 19233.0, 18217.0, 14955.0, 14703.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [20096.0, 19366.0, 18983.0, 18252.0, 18163.0, 17349.0, 17645.0, 16868.0, 16658.0, 16593.0, 14364.0, 14483.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [6947.0, 7671.0, 6456.0, 6927.0, 7193.0, 7161.0, 6773.0, 6965.0, 6893.0, 6821.0, 9157.0, 9414.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [254.0, 243.0, 244.0, 239.0, 242.0, 230.0, 224.0, 220.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_1'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [24056.0, 24419.0, 23136.0, 24372.0, 23780.0, 24000.0, 23707.0, 24014.0, 25006.0, 24577.0, 19328.0, 19371.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [20303.0, 20582.0, 19890.0, 19493.0, 19074.0, 18518.0, 18316.0, 17553.0, 17828.0, 18096.0, 15288.0, 15783.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [17655.0, 17522.0, 15639.0, 16626.0, 15859.0, 15220.0, 12823.0, 14869.0, 15701.0, 10007.0, 12481.0, 12885.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [420.0, 419.0, 420.0, 424.0, 411.0, 394.0, 377.0, 391.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_2'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [7704.0, 7829.0, 7578.0, 7657.0, 7500.0, 7542.0, 7341.0, 7448.0, 7830.0, 7622.0, 5900.0, 5747.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [6554.0, 6649.0, 6429.0, 6343.0, 6195.0, 6066.0, 6116.0, 6070.0, 6352.0, 6325.0, 5384.0, 5333.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [2796.0, 2877.0, 2933.0, 3084.0, 3143.0, 3016.0, 3079.0, 3301.0, 3385.0, 3413.0, 4362.0, 4346.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [102.0, 103.0, 101.0, 105.0, 103.0, 99.0, 94.0, 94.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_3'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1065.0, 1105.0, 1010.0, 1226.0, 1357.0, 1327.0, 1193.0, 1253.0, 1390.0, 1240.0, 1053.0, 1260.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [961.0, 978.0, 914.0, 956.0, 824.0, 733.0, 695.0, 689.0, 707.0, 675.0, 604.0, 603.0, 659.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [375.0, 474.0, 341.0, 399.0, 410.0, 418.0, 339.0, 342.0, 353.0, 361.0, 408.0, 934.0, 558.0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [17.0, 18.0, 16.0, 17.0, 18.0, 15.0, 17.0, 18.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_4'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [6032.0, 5770.0, 6225.0, 6642.0, 6152.0, 5852.0, 6834.0, 6331.0, 7313.0, 6462.0, 4921.0, 6112.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4486.0, 4477.0, 4256.0, 3716.0, 3379.0, 3397.0, 3214.0, 3136.0, 3412.0, 3245.0, 2834.0, 2886.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [1968.0, 2307.0, 2259.0, 2629.0, 2740.0, 2919.0, 2915.0, 2931.0, 3095.0, 3202.0, 3306.0, 3816.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [79.0, 79.0, 82.0, 79.0, 76.0, 74.0, 68.0, 65.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_5'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [6513.0, 6552.0, 6619.0, 6779.0, 6401.0, 6915.0, 6734.0, 6974.0, 7407.0, 7293.0, 5751.0, 5843.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4600.0, 4515.0, 4675.0, 4675.0, 4582.0, 4532.0, 4527.0, 4552.0, 4618.0, 4757.0, 3809.0, 3794.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [2833.0, 3242.0, 3347.0, 3743.0, 3854.0, 4088.0, 3957.0, 4130.0, 3199.0, 3059.0, 3993.0, 3785.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [81.0, 80.0, 74.0, 85.0, 79.0, 83.0, 83.0, 82.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_6'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [28909.0, 28994.0, 27876.0, 27412.0, 27602.0, 28084.0, 28661.0, 28036.0, 28484.0, 27200.0, 21452.0, 22414.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [25778.0, 25374.0, 24902.0, 24796.0, 24149.0, 23682.0, 23919.0, 24011.0, 24082.0, 23409.0, 20491.0, 20370.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [21521.0, 20960.0, 18508.0, 18485.0, 18819.0, 19501.0, 17647.0, 19387.0, 20639.0, 12015.0, 14977.0, 15356.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [482.0, 467.0, 464.0, 460.0, 472.0, 481.0, 467.0, 468.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_7'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [11259.0, 11695.0, 13082.0, 12072.0, 11726.0, 12025.0, 11791.0, 11732.0, 11518.0, 11779.0, 9277.0, 9630.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [8505.0, 8045.0, 7959.0, 7989.0, 7766.0, 7622.0, 7568.0, 7288.0, 7604.0, 7586.0, 6132.0, 6298.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [3912.0, 4156.0, 3391.0, 4304.0, 3758.0, 3784.0, 3764.0, 3699.0, 3466.0, 3285.0, 4225.0, 4463.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [159.0, 141.0, 135.0, 146.0, 146.0, 139.0, 134.0, 140.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_8'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4213.0, 4135.0, 4204.0, 4376.0, 4175.0, 4164.0, 3959.0, 4290.0, 4426.0, 4089.0, 3230.0, 3708.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [3492.0, 3410.0, 3404.0, 3390.0, 3272.0, 3246.0, 3136.0, 3032.0, 3211.0, 3243.0, 2770.0, 2819.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [3150.0, 3289.0, 3255.0, 3367.0, 3341.0, 3730.0, 3573.0, 3722.0, 3519.0, 3260.0, 3105.0, 3067.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [67.0, 65.0, 62.0, 61.0, 56.0, 58.0, 56.0, 53.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_9'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1500.0, 1455.0, 1300.0, 1412.0, 1327.0, 1322.0, 1490.0, 1531.0, 1819.0, 1629.0, 1250.0, 1267.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [1482.0, 1409.0, 1223.0, 1177.0, 1140.0, 1118.0, 1124.0, 1207.0, 1322.0, 1309.0, 975.0, 991.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [732.0, 837.0, 609.0, 775.0, 734.0, 819.0, 725.0, 535.0, 519.0, 596.0, 732.0, 800.0, 649.0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [19.0, 17.0, 17.0, 22.0, 20.0, 15.0, 15.0, 16.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_10'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4798.0, 5094.0, 5301.0, 5321.0, 5339.0, 5318.0, 5532.0, 6002.0, 6180.0, 5759.0, 4840.0, 4560.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4215.0, 4019.0, 3884.0, 3839.0, 3490.0, 3358.0, 3292.0, 3170.0, 3253.0, 3201.0, 2829.0, 2864.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [1986.0, 2307.0, 2199.0, 2285.0, 2517.0, 2360.0, 2388.0, 2307.0, 1972.0, 2181.0, 2092.0, 2023.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [75.0, 64.0, 68.0, 70.0, 45.0, 58.0, 54.0, 53.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_11'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4097.0, 4530.0, 4251.0, 4753.0, 4532.0, 4548.0, 4213.0, 4484.0, 5133.0, 4886.0, 3962.0, 4613.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [3820.0, 3807.0, 3589.0, 3631.0, 3419.0, 3255.0, 3105.0, 3050.0, 3231.0, 3013.0, 2201.0, 2621.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [1667.0, 1994.0, 2213.0, 1747.0, 1675.0, 1750.0, 1883.0, 1852.0, 1764.0, 1781.0, 2185.0, 2287.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [59.0, 58.0, 52.0, 57.0, 53.0, 50.0, 47.0, 51.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_12'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [12873.0, 13175.0, 13117.0, 12799.0, 12314.0, 12668.0, 13182.0, 13380.0, 14489.0, 13706.0, 11019.0, 11171.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12454.0, 12653.0, 12451.0, 12240.0, 12151.0, 12083.0, 12132.0, 11588.0, 12030.0, 11845.0, 10267.0, 10482.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [10587.0, 14168.0, 16018.0, 20049.0, 29743.0, 30480.0, 31260.0, 23523.0, 24739.0, 5640.0, 7198.0, 7432.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [282.0, 293.0, 318.0, 328.0, 416.0, 423.0, 401.0, 341.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_13'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [9367.0, 9765.0, 9346.0, 9433.0, 8939.0, 8972.0, 8843.0, 9214.0, 10327.0, 9902.0, 7773.0, 7616.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [7869.0, 7968.0, 7792.0, 7480.0, 7224.0, 7073.0, 7026.0, 6929.0, 7413.0, 7124.0, 6099.0, 6153.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [3209.0, 3114.0, 3424.0, 3177.0, 3253.0, 3519.0, 3685.0, 3577.0, 3700.0, 3616.0, 4415.0, 4449.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [112.0, 111.0, 108.0, 105.0, 104.0, 96.0, 95.0, 97.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_14'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [13543.0, 13088.0, 13578.0, 14090.0, 13688.0, 12715.0, 13214.0, 13600.0, 14208.0, 14239.0, 10817.0, 10986.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12334.0, 12413.0, 12331.0, 12357.0, 12349.0, 11887.0, 11983.0, 11669.0, 12395.0, 12672.0, 10918.0, 11014.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [26967.0, 21881.0, 19383.0, 18157.0, 4485.0, 5415.0, 5540.0, 6344.0, 6638.0, 6465.0, 7481.0, 7789.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [318.0, 308.0, 299.0, 299.0, 164.0, 160.0, 167.0, 165.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_15'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [23665.0, 23363.0, 23310.0, 24743.0, 24035.0, 25291.0, 23776.0, 23009.0, 24618.0, 23576.0, 19136.0, 17901.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [23025.0, 23333.0, 22934.0, 22558.0, 21746.0, 21080.0, 20449.0, 19988.0, 21216.0, 20611.0, 17795.0, 17581.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [11702.0, 10708.0, 8410.0, 8466.0, 8521.0, 8414.0, 10619.0, 10813.0, 11521.0, 10861.0, 13299.0, 12584.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [320.0, 310.0, 307.0, 310.0, 302.0, 299.0, 283.0, 286.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_16'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [5600.0, 5909.0, 5648.0, 6201.0, 6111.0, 5929.0, 6229.0, 6646.0, 6395.0, 6007.0, 5357.0, 6141.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4084.0, 4023.0, 3845.0, 3670.0, 3664.0, 3551.0, 3552.0, 3389.0, 3599.0, 3389.0, 2856.0, 3064.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [1809.0, 2002.0, 1813.0, 1693.0, 1834.0, 1746.0, 1618.0, 1597.0, 1844.0, 1828.0, 2012.0, 2161.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [54.0, 55.0, 52.0, 50.0, 52.0, 44.0, 41.0, 42.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_17'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [979.0, 949.0, 968.0, 1018.0, 1061.0, 1073.0, 1041.0, 1015.0, 1140.0, 1145.0, 868.0, 1025.0, 796.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [747.0, 751.0, 779.0, 804.0, 781.0, 807.0, 807.0, 819.0, 843.0, 873.0, 790.0, 811.0, 910.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [556.0, 509.0, 655.0, 605.0, 482.0, 468.0, 481.0, 455.0, 503.0, 431.0, 634.0, 846.0, 724.0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [10.0, 10.0, 10.0, 10.0, 12.0, 12.0, 11.0, 10.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_18'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [16983.0, 17660.0, 17370.0, 17390.0, 15007.0, 15214.0, 15197.0, 15538.0, 16363.0, 15955.0, 12577.0, 12821.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [13708.0, 13798.0, 13523.0, 13746.0, 12819.0, 12648.0, 12894.0, 12866.0, 13414.0, 13297.0, 11839.0, 12189.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [5206.0, 5522.0, 5305.0, 5313.0, 6269.0, 6956.0, 6947.0, 7564.0, 8430.0, 8224.0, 9835.0, 9257.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [210.0, 216.0, 211.0, 211.0, 194.0, 192.0, 185.0, 188.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_19'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1101.0, 1153.0, 1186.0, 1169.0, 1208.0, 1374.0, 1310.0, 1328.0, 1440.0, 1355.0, 1121.0, 1174.0, 967.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [1192.0, 1124.0, 942.0, 887.0, 844.0, 924.0, 897.0, 899.0, 921.0, 871.0, 749.0, 772.0, 788.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [368.0, 409.0, 370.0, 320.0, 347.0, 416.0, 421.0, 345.0, 362.0, 429.0, 490.0, 544.0, 422.0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [16.0, 16.0, 14.0, 14.0, 14.0, 13.0, 12.0, 14.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_20'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [4993.0, 4880.0, 4976.0, 4922.0, 4633.0, 4872.0, 4735.0, 4876.0, 4925.0, 4684.0, 3745.0, 4307.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [4467.0, 4447.0, 4202.0, 3990.0, 3914.0, 3832.0, 3862.0, 3702.0, 3801.0, 3860.0, 3269.0, 3308.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [3115.0, 3071.0, 3532.0, 3260.0, 2862.0, 3054.0, 2757.0, 2787.0, 3687.0, 3723.0, 2042.0, 2294.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [54.0, 57.0, 55.0, 58.0, 52.0, 49.0, 47.0, 47.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_21'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [12689.0, 13562.0, 13340.0, 13738.0, 13683.0, 14733.0, 14484.0, 15402.0, 17196.0, 16185.0, 13080.0, 14152.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12026.0, 12434.0, 11923.0, 11987.0, 11282.0, 10982.0, 10511.0, 10315.0, 10745.0, 10307.0, 8833.0, 8999.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [4025.0, 4183.0, 5074.0, 5391.0, 5131.0, 5872.0, 5826.0, 5805.0, 6352.0, 5790.0, 6792.0, 7196.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [187.0, 189.0, 195.0, 195.0, 190.0, 177.0, 173.0, 174.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_22'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [8472.0, 10249.0, 8003.0, 8591.0, 8083.0, 7525.0, 7631.0, 8312.0, 9467.0, 9033.0, 8278.0, 9530.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [6279.0, 6231.0, 6144.0, 5668.0, 5524.0, 5168.0, 5412.0, 5307.0, 5382.0, 5516.0, 4879.0, 4941.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [2402.0, 2705.0, 2295.0, 2427.0, 2913.0, 3719.0, 3839.0, 3700.0, 3548.0, 3414.0, 4058.0, 3778.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [100.0, 106.0, 99.0, 91.0, 95.0, 99.0, 99.0, 102.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_23'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [19833.0, 20695.0, 20529.0, 20755.0, 21322.0, 21100.0, 21222.0, 21641.0, 24902.0, 22870.0, 17966.0, 17426.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [18636.0, 18171.0, 17905.0, 17601.0, 16762.0, 16169.0, 16414.0, 16444.0, 17804.0, 17532.0, 15275.0, 15188.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [21868.0, 22372.0, 19612.0, 20580.0, 20214.0, 21517.0, 20471.0, 19270.0, 21063.0, 10611.0, 11737.0, 11882.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [418.0, 409.0, 410.0, 425.0, 414.0, 422.0, 412.0, 404.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_24'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [24054.0, 24684.0, 23803.0, 24183.0, 24461.0, 24217.0, 24717.0, 25720.0, 25736.0, 24227.0, 19496.0, 19697.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [24668.0, 25080.0, 23690.0, 22950.0, 22501.0, 21887.0, 21977.0, 21790.0, 22025.0, 21584.0, 18651.0, 18572.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [26286.0, 25802.0, 22186.0, 20515.0, 22012.0, 21234.0, 20814.0, 20119.0, 17752.0, 9462.0, 12089.0, 13087.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [539.0, 533.0, 536.0, 535.0, 534.0, 519.0, 511.0, 499.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_25'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [16579.0, 16987.0, 17028.0, 17054.0, 16510.0, 16992.0, 17168.0, 17699.0, 18955.0, 18199.0, 14423.0, 14669.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [14485.0, 14473.0, 14091.0, 13810.0, 12909.0, 13137.0, 13492.0, 13541.0, 13439.0, 14121.0, 11963.0, 12023.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [7080.0, 7412.0, 7506.0, 7407.0, 8758.0, 11222.0, 12506.0, 12514.0, 17798.0, 7059.0, 8678.0, 8700.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [218.0, 214.0, 217.0, 213.0, 219.0, 258.0, 265.0, 257.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_26'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [15465.0, 14987.0, 14813.0, 14969.0, 14031.0, 14051.0, 14167.0, 14834.0, 15471.0, 14981.0, 11593.0, 11251.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12195.0, 12070.0, 11802.0, 11835.0, 11610.0, 11379.0, 11341.0, 11679.0, 11749.0, 12036.0, 10219.0, 10476.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [5219.0, 5496.0, 5478.0, 5753.0, 5974.0, 6099.0, 6210.0, 6426.0, 6640.0, 6335.0, 7905.0, 8281.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [191.0, 190.0, 190.0, 192.0, 184.0, 183.0, 170.0, 173.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_27'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [1071.0, 1086.0, 1218.0, 1264.0, 1161.0, 1264.0, 1262.0, 1445.0, 1356.0, 1223.0, 1017.0, 1252.0, 947.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [1239.0, 1085.0, 987.0, 952.0, 948.0, 913.0, 928.0, 935.0, 895.0, 907.0, 774.0, 778.0, 852.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [472.0, 439.0, 372.0, 391.0, 388.0, 387.0, 447.0, 409.0, 465.0, 484.0, 622.0, 703.0, 620.0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [16.0, 16.0, 16.0, 14.0, 14.0, 12.0, 12.0, 12.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_28'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [308.0, 401.0, 328.0, 369.0, 361.0, 391.0, 376.0, 493.0, 475.0, 429.0, 348.0, 437.0, 251.0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [183.0, 164.0, 168.0, 222.0, 193.0, 198.0, 199.0, 186.0, 207.0, 197.0, 175.0, 180.0, 189.0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [53.0, 67.0, 64.0, 65.0, 71.0, 68.0, 73.0, 62.0, 66.0, 62.0, 87.0, 92.0, 114.0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [2.0, 2.0, 3.0, 2.0, 3.0, 3.0, 3.0, 3.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_29'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [10489.0, 10381.0, 10636.0, 11005.0, 10920.0, 10930.0, 10597.0, 10805.0, 11450.0, 10762.0, 8710.0, 8611.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [12072.0, 11854.0, 12035.0, 12000.0, 11507.0, 11359.0, 11322.0, 10840.0, 10905.0, 10908.0, 9357.0, 9700.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [4909.0, 4817.0, 4684.0, 4816.0, 4706.0, 4862.0, 5079.0, 4596.0, 4763.0, 4797.0, 5897.0, 6020.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [146.0, 139.0, 140.0, 143.0, 142.0, 138.0, 137.0, 137.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_30'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [15171.0, 14682.0, 14301.0, 14382.0, 14409.0, 15013.0, 16085.0, 15697.0, 15441.0, 15211.0, 12136.0, 12473.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [16983.0, 16828.0, 16418.0, 16043.0, 15824.0, 15982.0, 16022.0, 16078.0, 14423.0, 15089.0, 13313.0, 13797.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [9412.0, 9619.0, 7887.0, 8524.0, 7708.0, 7747.0, 7097.0, 6349.0, 6312.0, 6234.0, 8891.0, 9295.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [202.0, 197.0, 192.0, 195.0, 194.0, 199.0, 199.0, 202.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_31'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [26405.0, 27358.0, 27080.0, 27568.0, 26253.0, 26989.0, 26602.0, 25646.0, 26826.0, 25784.0, 20386.0, 20647.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [21083.0, 21096.0, 20906.0, 20499.0, 19882.0, 19487.0, 20058.0, 19751.0, 20427.0, 20343.0, 17326.0, 17988.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [29566.0, 30466.0, 29424.0, 27373.0, 26010.0, 26071.0, 27115.0, 25542.0, 22743.0, 10022.0, 13278.0, 12990.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [499.0, 507.0, 512.0, 519.0, 509.0, 495.0, 485.0, 436.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+    allCharts.push(new Chart(document.getElementById('chart_32'), {"type": "bar", "data": {"labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "datasets": [{"label": "Organiques", "data": [5287.0, 5160.0, 5241.0, 5865.0, 5200.0, 5576.0, 5338.0, 4706.0, 5358.0, 4756.0, 3997.0, 4089.0, 0], "backgroundColor": "#22c55e", "borderColor": "#22c55e", "borderWidth": 0, "borderRadius": 3}, {"label": "Recyclables", "data": [3854.0, 3706.0, 3642.0, 3559.0, 3426.0, 3468.0, 3448.0, 3380.0, 3550.0, 3403.0, 2986.0, 3001.0, 0], "backgroundColor": "#3b82f6", "borderColor": "#3b82f6", "borderWidth": 0, "borderRadius": 3}, {"label": "CRD & encombrants", "data": [1873.0, 1989.0, 1879.0, 1802.0, 2074.0, 2802.0, 2176.0, 1485.0, 1426.0, 1388.0, 1702.0, 2072.0, 0], "backgroundColor": "#f97316", "borderColor": "#f97316", "borderWidth": 0, "borderRadius": 3}, {"label": "RDD", "data": [57.0, 52.0, 51.0, 56.0, 53.0, 57.0, 53.0, 57.0, 0, 0, 0, 0, 0], "backgroundColor": "#a855f7", "borderColor": "#a855f7", "borderWidth": 0, "borderRadius": 3}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}, "tooltip": {"mode": "index", "intersect": false, "callbacks": {}}}, "scales": {"x": {"stacked": true, "grid": {"display": false}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}}, "y": {"stacked": true, "grid": {"color": "rgba(148,163,184,0.1)"}, "ticks": {"color": "#94a3b8", "font": {"size": 11}}, "title": {"display": true, "text": "Tonnes", "color": "#94a3b8", "font": {"size": 11}}}}}}));
+
+  const DEFAULT_VISIBLE = new Set(["Organiques", "Recyclables"]);
+  allCharts.forEach(chart => {
+    chart.data.datasets.forEach((ds, i) => {
+      chart.setDatasetVisibility(i, DEFAULT_VISIBLE.has(ds.label));
+    });
+    chart.update('none');
+  });
+
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      const visible = btn.classList.contains('active');
+      const label = btn.dataset.label;
+      allCharts.forEach(chart => {
+        chart.data.datasets.forEach((ds, i) => {
+          if (ds.label === label) chart.setDatasetVisibility(i, visible);
+        });
+        chart.update('none');
+      });
+    });
+  });
   </script>
 </body>
 </html>

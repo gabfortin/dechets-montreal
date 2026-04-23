@@ -13,13 +13,8 @@ EXCLUDED = {
     "Écocentres et collectes itinérantes",
 }
 
-# Matières to exclude from charts
-EXCLUDED_MATIERES = {
-    "Résidus de construction, rénovation, démolition et encombrants",
-    "Résidus de construction, rénovation, démolition et encombrants éliminés",
-    "Résidus domestiques dangereux",
-    "Résidus domestiques dangereux et PE",
-}
+# Matières visible by default (others are toggled off on load)
+DEFAULT_VISIBLE = {"Matières recyclables", "Matières organiques"}
 
 # Normalize territory names (different dash/space variants across years)
 NAME_MAP = {
@@ -82,8 +77,6 @@ def load_data():
                 continue
             annee = row["annee"]
             matiere = row["matiere"]
-            if matiere in EXCLUDED_MATIERES:
-                continue
             quantite = parse_quantity(row["quantite_generee_donnees_agglo"])
             if quantite > 0:
                 data[territoire][annee][matiere] += quantite
@@ -142,16 +135,24 @@ def build_chart_config(territoire, data, annees, matieres):
     }
 
 
+FEATURED = "Le Plateau-Mont-Royal"
+
+
 def build_html(data, territoires, annees, matieres):
     charts_js = []
     cards_html = []
 
-    for i, territoire in enumerate(territoires):
+    # Featured territory first, then the rest alphabetically
+    ordered = [FEATURED] + [t for t in territoires if t != FEATURED]
+
+    default_labels_js = json.dumps(sorted({MATIERE_LABELS.get(m, m) for m in DEFAULT_VISIBLE}))
+
+    for i, territoire in enumerate(ordered):
         config = build_chart_config(territoire, data, annees, matieres)
         config_json = json.dumps(config, ensure_ascii=False)
         chart_id = f"chart_{i}"
+        featured_class = " card--featured" if territoire == FEATURED else ""
 
-        # Compute total for the latest available year
         latest = max((a for a in annees if any(
             data[territoire][a].get(m, 0) for m in matieres
         )), default=annees[-1])
@@ -162,7 +163,7 @@ def build_html(data, territoires, annees, matieres):
         )
 
         cards_html.append(f"""
-        <div class="card">
+        <div class="card{featured_class}">
           <div class="card-header">
             <div>
               <h2 class="card-title">{territoire}</h2>
@@ -176,10 +177,13 @@ def build_html(data, territoires, annees, matieres):
         </div>""")
 
         charts_js.append(f"""
-    new Chart(document.getElementById('{chart_id}'), {config_json});""")
+    allCharts.push(new Chart(document.getElementById('{chart_id}'), {config_json}));""")
 
-    legend_items = "".join(
-        f'<span class="legend-item"><span class="legend-dot" style="background:{MATIERE_COLORS.get(m, "#94a3b8")}"></span>{MATIERE_LABELS.get(m, m)}</span>'
+    toggle_buttons = "".join(
+        f'<button class="toggle-btn{"" if m not in DEFAULT_VISIBLE else " active"}" '
+        f'data-label="{MATIERE_LABELS.get(m, m)}" '
+        f'style="--color:{MATIERE_COLORS.get(m, "#94a3b8")}">'
+        f'{MATIERE_LABELS.get(m, m)}</button>'
         for m in matieres
     )
 
@@ -238,29 +242,53 @@ def build_html(data, territoires, annees, matieres):
       text-decoration: underline;
     }}
 
-    .legend {{
+    .filters {{
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.5rem 1.25rem;
-      padding: 1.25rem 2rem;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
       border-bottom: 1px solid #1e293b;
       background: #0f172a;
     }}
 
-    .legend-item {{
+    .toggle-btn {{
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 99px;
+      border: 1px solid #334155;
+      background: transparent;
+      color: #475569;
       font-size: 0.78rem;
-      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.15s;
     }}
 
-    .legend-dot {{
-      width: 10px;
-      height: 10px;
+    .toggle-btn::before {{
+      content: '';
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
+      background: var(--color);
+      opacity: 0.3;
       flex-shrink: 0;
+      transition: opacity 0.15s;
+    }}
+
+    .toggle-btn.active {{
+      border-color: var(--color);
+      color: #e2e8f0;
+    }}
+
+    .toggle-btn.active::before {{
+      opacity: 1;
+    }}
+
+    .toggle-btn:hover {{
+      border-color: var(--color);
+      color: #e2e8f0;
     }}
 
     .grid {{
@@ -278,6 +306,18 @@ def build_html(data, territoires, annees, matieres):
       border-radius: 14px;
       padding: 1.25rem 1.25rem 1rem;
       transition: border-color 0.2s, box-shadow 0.2s;
+    }}
+
+    .card--featured {{
+      grid-column: 1 / -1;
+    }}
+
+    .card--featured .chart-wrap {{
+      height: 300px;
+    }}
+
+    .card--featured .card-title {{
+      font-size: 1.1rem;
     }}
 
     .card:hover {{
@@ -341,8 +381,8 @@ def build_html(data, territoires, annees, matieres):
     <p class="source">Source : <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank">Données ouvertes — Ville de Montréal</a></p>
   </header>
 
-  <div class="legend">
-    {legend_items}
+  <div class="filters">
+    {toggle_buttons}
   </div>
 
   <div class="grid">
@@ -350,14 +390,35 @@ def build_html(data, territoires, annees, matieres):
   </div>
 
   <footer>
-    Source : <a href="https://donnees.montreal.ca" target="_blank">Données ouvertes Montréal</a> · Ville de Montréal
+    Source : <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank">Données ouvertes Montréal</a> · Ville de Montréal
   </footer>
 
   <script>
   Chart.defaults.color = "#94a3b8";
-  (function() {{
-    {"".join(charts_js)}
-  }})();
+  const allCharts = [];
+  {"".join(charts_js)}
+
+  const DEFAULT_VISIBLE = new Set({default_labels_js});
+  allCharts.forEach(chart => {{
+    chart.data.datasets.forEach((ds, i) => {{
+      chart.setDatasetVisibility(i, DEFAULT_VISIBLE.has(ds.label));
+    }});
+    chart.update('none');
+  }});
+
+  document.querySelectorAll('.toggle-btn').forEach(btn => {{
+    btn.addEventListener('click', () => {{
+      btn.classList.toggle('active');
+      const visible = btn.classList.contains('active');
+      const label = btn.dataset.label;
+      allCharts.forEach(chart => {{
+        chart.data.datasets.forEach((ds, i) => {{
+          if (ds.label === label) chart.setDatasetVisibility(i, visible);
+        }});
+        chart.update('none');
+      }});
+    }});
+  }});
   </script>
 </body>
 </html>"""
