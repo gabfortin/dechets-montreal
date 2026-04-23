@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bilan massique — Matières résiduelles · Montréal</title>
+  <link rel="icon" type="image/svg+xml" href="img/recycle.svg">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,6 +21,32 @@
       border-bottom: 1px solid #1e293b;
       padding: 2.5rem 2rem 2rem;
       text-align: center;
+      position: relative;
+    }
+
+    .author {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #64748b;
+      font-size: 0.78rem;
+      transition: color 0.15s;
+    }
+
+    .author:hover {
+      color: #e2e8f0;
+    }
+
+    .author img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #334155;
     }
 
     header h1 {
@@ -104,7 +131,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr));
       gap: 1.25rem;
       padding: 1.5rem;
       max-width: 1600px;
@@ -187,6 +214,10 @@
 </head>
 <body>
   <header>
+    <a class="author" href="https://gabfortin.com" target="_blank">
+      <img src="img/Gabriel Fortin.png" alt="Gabriel Fortin">
+      gabfortin.com
+    </a>
     <h1>Matières résiduelles — Bilan massique</h1>
     <p>Quantités générées par arrondissement · Agglomération de Montréal · 2012–2024</p>
     <p class="source">Source : <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank">Données ouvertes — Ville de Montréal</a></p>
