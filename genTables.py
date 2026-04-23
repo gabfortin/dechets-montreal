@@ -416,6 +416,7 @@ def build_html(data, territoires, annees, matieres):
         position: static;
         justify-content: center;
         margin-top: 1rem;
+        margin-bottom: 1.5rem;
       }}
     }}
   </style>
