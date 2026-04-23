@@ -14,7 +14,9 @@ EXCLUDED = {
 }
 
 # Matières visible by default (others are toggled off on load)
-DEFAULT_VISIBLE = {"Matières recyclables", "Matières organiques"}
+DEFAULT_VISIBLE = {"Résidus de construction, rénovation, démolition et encombrants"}
+
+CRD_MATIERE = "Résidus de construction, rénovation, démolition et encombrants"
 
 # Normalize territory names (different dash/space variants across years)
 NAME_MAP = {
@@ -84,8 +86,9 @@ def load_data():
                 annees_seen.add(annee)
 
     annees = sorted(annees_seen)
-    matieres = sorted(matieres_seen, key=lambda m: -sum(
-        data[t][a].get(m, 0) for t in data for a in data[t]
+    matieres = sorted(matieres_seen, key=lambda m: (
+        0 if m == CRD_MATIERE else 1,
+        -sum(data[t][a].get(m, 0) for t in data for a in data[t])
     ))
     territoires = sorted(data.keys())
     return data, territoires, annees, matieres
@@ -96,14 +99,17 @@ def build_chart_config(territoire, data, annees, matieres):
     for matiere in matieres:
         values = [data[territoire][a].get(matiere, 0) for a in annees]
         if any(v > 0 for v in values):
-            datasets.append({
+            ds = {
                 "label": MATIERE_LABELS.get(matiere, matiere),
                 "data": values,
                 "backgroundColor": MATIERE_COLORS.get(matiere, "#94a3b8"),
                 "borderColor": MATIERE_COLORS.get(matiere, "#94a3b8"),
                 "borderWidth": 0,
                 "borderRadius": 3,
-            })
+            }
+            if matiere not in DEFAULT_VISIBLE:
+                ds["hidden"] = True
+            datasets.append(ds)
     return {
         "type": "bar",
         "data": {"labels": annees, "datasets": datasets},
@@ -144,8 +150,6 @@ def build_html(data, territoires, annees, matieres):
 
     # Featured territory first, then the rest alphabetically
     ordered = [FEATURED] + [t for t in territoires if t != FEATURED]
-
-    default_labels_js = json.dumps(sorted({MATIERE_LABELS.get(m, m) for m in DEFAULT_VISIBLE}))
 
     for i, territoire in enumerate(ordered):
         config = build_chart_config(territoire, data, annees, matieres)
@@ -397,14 +401,6 @@ def build_html(data, territoires, annees, matieres):
   Chart.defaults.color = "#94a3b8";
   const allCharts = [];
   {"".join(charts_js)}
-
-  const DEFAULT_VISIBLE = new Set({default_labels_js});
-  allCharts.forEach(chart => {{
-    chart.data.datasets.forEach((ds, i) => {{
-      chart.setDatasetVisibility(i, DEFAULT_VISIBLE.has(ds.label));
-    }});
-    chart.update('none');
-  }});
 
   document.querySelectorAll('.toggle-btn').forEach(btn => {{
     btn.addEventListener('click', () => {{
