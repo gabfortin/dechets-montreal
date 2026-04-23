@@ -242,6 +242,13 @@ def build_html(data, territoires, annees, matieres):
       border: 1px solid #334155;
     }}
 
+    .header-icon {{
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 0.75rem;
+      display: block;
+    }}
+
     header h1 {{
       font-size: clamp(1.5rem, 4vw, 2.25rem);
       font-weight: 700;
@@ -419,6 +426,7 @@ def build_html(data, territoires, annees, matieres):
       <img src="img/Gabriel Fortin.png" alt="Gabriel Fortin">
       gabfortin.com
     </a>
+    <img class="header-icon" src="img/favico.png" alt="">
     <h1>Matières résiduelles — Bilan massique</h1>
     <p>Quantités générées par arrondissement · Agglomération de Montréal · {annees[0]}–{annees[-1]}</p>
     <p class="source">Source : <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank">Données ouvertes — Ville de Montréal</a></p>
