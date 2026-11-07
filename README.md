@@ -1,91 +1,115 @@
-# Matières résiduelles — Bilan massique · Montréal
+# Matières résiduelles Montréal — bilan massique
 
-Visualisation interactive des quantités de matières résiduelles générées par arrondissement sur l'agglomération de Montréal, de 2012 à 2024.
+Tableau de bord des tonnes de matières résiduelles **générées** dans chacun des
+33 arrondissements et villes liées de l'agglomération de Montréal, de 2012 à
+2024, par catégorie. Pour les citoyen·nes, les élu·es et les journalistes qui
+veulent comparer les territoires ou suivre l'évolution d'un arrondissement.
 
 **Site en ligne** : [dechets.gabfortin.com](https://dechets.gabfortin.com)
 
----
+## Contenu
 
-## Aperçu
+| Section | Ce qu'elle montre |
+|---|---|
+| En-tête | Chiffres clés du Plateau-Mont-Royal pour la dernière année publiée |
+| Catégories affichées | Boutons qui affichent ou masquent une catégorie dans **tous** les graphiques |
+| Le Plateau-Mont-Royal | Graphique en vedette (barres empilées par année) |
+| Tous les arrondissements et villes liées | Un graphique par territoire, ordre alphabétique |
+| Sources et limites | Source, colonne utilisée, correspondance des catégories, limites |
 
-Chaque arrondissement est représenté par un graphique à barres empilées montrant l'évolution annuelle par catégorie de matière (CRD & encombrants, recyclables, organiques, RDD, etc.). Un bouton de filtre par catégorie permet de comparer les tendances à travers tous les arrondissements simultanément.
+Chaque graphique a sa version en tableau (« Voir les données en tableau »).
 
 ## Source des données
 
-[Données ouvertes — Ville de Montréal](https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique)
+[Matières résiduelles — bilan massique](https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique),
+Ville de Montréal, données ouvertes. Fichier : `matieres-residuelles-bilan-massique.csv`.
 
-Fichier CSV : `matieres-residuelles-bilan-massique.csv`
+Colonnes utilisées : `annee`, `matiere`, `territoire`,
+`quantite_generee_donnees_agglo` (quantité générée, en tonnes).
 
-Colonnes utilisées :
-- `annee` — année de collecte
-- `matiere` — type de matière résiduelle
-- `territoire` — arrondissement ou ville liée
-- `quantite_generee_donnees_agglo` — quantité générée (tonnes), données agglomération
+## Mise à jour
 
-## Structure du projet
+Manuelle, quand la Ville publie un nouveau fichier :
+
+```bash
+# 1. remplacer matieres-residuelles-bilan-massique.csv par la nouvelle version
+python3 genTables.py          # régénère data/bilan-massique.json
+python3 -m http.server 8000   # vérifier la page sur http://localhost:8000
+```
+
+Le script s'arrête avec une erreur (plutôt que d'afficher un chiffre faux) si une
+quantité est illisible, si une nouvelle catégorie apparaît sans être déclarée dans
+`MATIERES`, ou si deux variantes d'un même nom de territoire se retrouvent la même
+année.
+
+## Mises en garde
+
+- **Quantité générée seulement** : les quantités collectées, taux de récupération et
+  données CMM de la source ne sont pas affichés.
+- **« NA » dans la source** = aucune valeur : rien dans le graphique, « — » dans le
+  tableau. Les RDD ne sont publiés par territoire que de 2012 à 2019 ; plusieurs
+  catégories (ordures ménagères, textiles, électroniques…) n'ont aucune quantité
+  générée par territoire et n'apparaissent pas. La liste est calculée par le script
+  (`meta.sans_donnees`) et affichée dans la page.
+- **Territoires agrégés exclus** (`EXCLUDED`) : Agglomération de Montréal, Ville de
+  Montréal, Écocentres, Écocentres et collectes itinérantes.
+- **Noms harmonisés** (`NAME_MAP`) : la source écrit certains noms de deux façons
+  selon l'année (« Rosemont - La Petite-Patrie » / « Rosemont–La Petite-Patrie »).
+- **Séparateur de milliers** : en 2024, la source écrit les milliers avec une espace
+  insécable (« 15 523 »). Avant novembre 2026, le script ne retirait que les espaces
+  ordinaires et ces 84 valeurs étaient affichées à 0 (recyclables, organiques et CRD
+  de 2024). Corrigé dans `parse_quantity()`.
+- **Échelle propre à chaque graphique** : comparer les tonnes, pas la hauteur des barres.
+- Initiative indépendante, ni produite ni approuvée par la Ville de Montréal.
+
+## Architecture
+
+```
+matieres-residuelles-bilan-massique.csv   # source (Ville de Montréal)
+   → genTables.py                          # agrège (stdlib seulement)
+      → data/bilan-massique.json           # seul fichier régénéré
+         → index.html + css/ + js/main.js  # statiques, modifiables sans relancer le script
+```
 
 ```
 .
-├── genTables.py                            # Script de génération du HTML
-├── matieres-residuelles-bilan-massique.csv # Données source
-├── index.html                              # Page générée (ne pas éditer manuellement)
-├── img/
-│   ├── Gabriel Fortin.png                  # Photo de profil (lien auteur)
-│   └── recycle.svg                         # Favicon
-└── CNAME                                   # Domaine GitHub Pages
+├── index.html               # page (statique)
+├── confidentialite.html     # politique de confidentialité
+├── css/style.css            # mise en page + palette des catégories (--mat-*)
+├── css/hybride.css          # habillage du style D (copié d'artm-data)
+├── js/main.js               # graphiques Chart.js 4.4.4, filtres, tableaux
+├── data/bilan-massique.json # généré par genTables.py
+├── genTables.py
+├── img/gabriel-fortin.jpg   # photo de la barre du haut
+├── img/apercu.jpg           # aperçu pour les réseaux sociaux (1200 × 630)
+└── CNAME                    # dechets.gabfortin.com
 ```
 
-## Génération
+Style **D, dashboard détaillé (hybride)** de `~/Developer/DESIGN-PAGES.md`
+(référence : `artm-data`). Mode sombre automatique ; les graphiques lisent leurs
+couleurs dans les variables CSS et se redessinent au changement de thème et à
+l'impression. Après une modification de CSS ou de JS, changer le `?v=` dans les deux
+pages HTML.
 
-`index.html` est entièrement généré par `genTables.py` — ne pas l'éditer à la main.
+### Catégories et couleurs
 
-```bash
-python3 genTables.py
-```
+Définies une seule fois : clé et libellé dans `MATIERES` (`genTables.py`), couleur
+dans `css/style.css` (jetons `--mat-*`).
 
-Dépendances : bibliothèque standard Python uniquement (`csv`, `json`, `collections`).
+| Catégorie | Jeton | Couleur |
+|---|---|---|
+| CRD & encombrants | `--mat-crd` | `#f97316` |
+| Recyclables | `--mat-recyclables` | `#3b82f6` |
+| Organiques | `--mat-organiques` | `#22c55e` |
+| RDD | `--mat-rdd` | `#a855f7` |
+| Ordures ménagères | `--mat-ordures` | `#ef4444` |
 
-## Fonctionnement de `genTables.py`
+## Confidentialité
 
-### 1. Chargement des données (`load_data`)
+Aucun cookie, aucun stockage local. Mesure d'audience anonyme avec GoatCounter.
+Services contactés par le navigateur : GitHub Pages, GoatCounter, jsDelivr
+(Chart.js), Google Fonts (Inter). Voir `confidentialite.html`.
 
-- Lit le CSV et agrège les quantités par territoire / année / matière
-- Exclut les territoires agrégés (`Agglomération de Montréal`, `Ville de Montréal`, `Écocentres`, etc.)
-- Normalise les variantes de noms d'arrondissements (`NAME_MAP`)
-- Trie les matières : CRD & encombrants en premier, puis par volume total décroissant
+## Contact
 
-### 2. Construction des graphiques (`build_chart_config`)
-
-- Génère une config [Chart.js 4](https://www.chartjs.org/) par territoire
-- Graphique à barres empilées, une série par matière présente
-- Les matières hors `DEFAULT_VISIBLE` reçoivent `hidden: true` dans la config du dataset — l'échelle Y est ainsi correcte dès le premier rendu, sans recalcul JavaScript post-chargement
-
-### 3. Génération du HTML (`build_html`)
-
-- Le Plateau-Mont-Royal est affiché en carte vedette (pleine largeur) en tête de grille
-- Les autres arrondissements sont triés alphabétiquement
-- Les boutons de filtre reflètent `DEFAULT_VISIBLE` via la classe `active`
-- Le JS du toggle lit les boutons actifs dans le DOM (`querySelectorAll('.toggle-btn.active')`) — les boutons HTML sont la seule source de vérité pour l'état par défaut
-
-## Catégories et couleurs
-
-| Catégorie | Couleur |
-|---|---|
-| CRD & encombrants | `#f97316` |
-| Recyclables | `#3b82f6` |
-| Organiques | `#22c55e` |
-| RDD | `#a855f7` |
-| Ordures ménagères | `#ef4444` |
-
-## Déploiement
-
-Le site est hébergé sur **GitHub Pages** avec domaine personnalisé (`dechets.gabfortin.com` via `CNAME`).
-
-Après chaque mise à jour des données ou du script :
-
-```bash
-python3 genTables.py
-git add index.html
-git commit -m "Mise à jour"
-git push
-```
+Gabriel Fortin, via [gabfortin.com](https://gabfortin.com).
