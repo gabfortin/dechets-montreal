@@ -46,7 +46,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.print-light) {
+  :root:not(.print-light):where(:not([data-theme="light"])) {
     color-scheme: dark;
     --surface-1: #1a1a19;
     --page-plane: #0d0d0d;
@@ -64,6 +64,25 @@
     --mat-rdd: #b77cf8;
   }
 }
+/* Thème sombre forcé (futur bouton de thème : <html data-theme="dark">), mêmes règles que ci-dessus. */
+  :root:not(.print-light):where([data-theme="dark"]) {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --page-plane: #0d0d0d;
+    --surface-2: #232321;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --gridline: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --border-strong: rgba(255,255,255,0.16);
+
+    --series-tc: #3987e5;
+    --mat-recyclables: #4f8ff7;   /* un peu éclairci : contraste sur fond sombre */
+    --mat-rdd: #b77cf8;
+  }
+
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }

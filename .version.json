@@ -1,0 +1,5 @@
+{
+  "fichier": "version.txt",
+  "donnees": ["data/", "*.xlsx", "*.csv"],
+  "pages": ["index.html", "confidentialite.html"]
+}
