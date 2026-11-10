@@ -35,7 +35,7 @@
 </script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>" />
 <link rel="stylesheet" href="css/style.css?v=2" />
-<link rel="stylesheet" href="css/hybride.css?v=2" />
+<link rel="stylesheet" href="css/hybride.css?v=3" />
 <script>window.goatcounter = {path: function(p) { return location.host + p }}</script>
 <script data-goatcounter="https://gabfortin.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -44,18 +44,22 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="#principal">♻️ Matières résiduelles <small>Montréal · bilan massique</small></a>
+    <a class="brand" href="#principal" aria-label="Matières résiduelles"><span class="brand-icone" aria-hidden="true">♻️</span><span class="brand-texte">Matières résiduelles <small>Montréal · bilan massique</small></span></a>
     <nav class="main-nav" aria-label="Navigation principale">
       <a href="#plateau">Plateau</a>
       <a href="#arrondissements">Arrondissements</a>
       <a href="#methodologie">Sources</a>
     </nav>
+    <button type="button" class="gf-info-btn" id="gfInfoBtn" aria-label="À propos de ce site" aria-haspopup="dialog" aria-controls="gfInfoOverlay" title="À propos">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="7.6" r="1.4" fill="currentColor"/><path d="M12 11v6.2" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+    </button>
     <a class="topbar-profile" href="https://gabfortin.com" target="_blank" rel="noopener" title="gabfortin.com">
       <span class="topbar-profile-name">gabfortin.com</span>
       <img src="img/gabriel-fortin.jpg" alt="Gabriel Fortin" width="32" height="32">
     </a>
   </div>
 </header>
+<script src="js/titre-barre.js"></script>
 
 <main id="principal">
 
@@ -169,6 +173,18 @@
 
 </main>
 
+<div class="gf-info-overlay" id="gfInfoOverlay">
+  <div class="gf-info-panel" role="dialog" aria-modal="true" aria-labelledby="gfInfoTitle">
+    <button type="button" class="gf-info-close" id="gfInfoClose" aria-label="Fermer « À propos »">✕</button>
+    <h2 id="gfInfoTitle">À propos de ce site</h2>
+    <p>Tonnes de matières résiduelles générées par arrondissement et ville liée de l'agglomération de Montréal, de 2012 à 2024, d'après le bilan massique de la Ville de Montréal.</p>
+    <p><strong>Données :</strong> <a href="https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique" target="_blank" rel="noopener">bilan massique des matières résiduelles</a>, données ouvertes de la Ville de Montréal. Détails : <a href="#methodologie" data-ferme-apropos>méthodologie</a>.</p>
+    <p><span data-copie-de="hero-freshness">Mises à jour à la main quand la Ville publie un nouveau fichier</span>.</p>
+    <p><strong>Initiative indépendante</strong> : n'est pas un produit officiel de la Ville de Montréal.</p>
+    <p>Réalisé par <a href="https://gabfortin.com" target="_blank" rel="noopener">Gabriel Fortin</a> · <a href="confidentialite.html">Confidentialité</a></p>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="wrap">
     <p>Site indépendant construit à partir des données ouvertes de la Ville de Montréal
@@ -180,5 +196,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha512-k72Y+sws0148dhTBT8Nyro04RwjANbBxNCZ80xKT3FdHNON55/us15Ju0YQ2dD0uzyBJ5YjXnbUcLWaCaw3rCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="js/main.js?v=2"></script>
+<script src="js/apropos.js"></script>
 </body>
 </html>
