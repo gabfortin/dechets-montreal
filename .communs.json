@@ -5,6 +5,7 @@
   },
   "blocs": {
     "css/hybride.css": [
+      "hybride.css",
       "apropos.css",
       "titre-barre.css"
     ]

@@ -15,6 +15,11 @@
    séries). --surface-1 reste OPAQUE : fond des infobulles des graphiques.
    Mode sombre : suit l'appareil uniquement (pas de bouton de thème).
    ═══════════════════════════════════════════════════════════════════════════ */
+/* ── Style D « dashboard détaillé » : bloc commun (outils/communs/hybride.css) ──
+   Identique dans artm-data, dechets-montreal, outils-cabinet et panneau-admin,
+   vérifié par le hook (outils/verifier_communs.py). Ne pas le modifier ici :
+   changer le modèle, puis le recopier dans chaque site. Les règles propres à
+   un site vont juste APRÈS ce bloc (elles l'emportent à spécificité égale). */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 :root {
@@ -89,9 +94,8 @@ html { background: var(--page); }
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   /* 'tnum' retiré du texte courant : dans Inter, il donne aussi une largeur
-     fixe au trait d'union (« Plateau - Mont - Royal »). Les chiffres restent
-     tabulaires là où ils comptent (KPI, tableaux, sous-titres) via
-     font-variant-numeric dans style.css, et dans les graphiques ci-dessous. */
+     fixe au trait d'union (« Plateau - Mont - Royal »). Chiffres tabulaires
+     là où ils comptent (KPI, tableaux, graphiques) : font-variant-numeric. */
   font-feature-settings: 'cv11', 'ss01';
   background:
     radial-gradient(50vmax 40vmax at 8% 0%,   var(--mesh-1), transparent 65%),
@@ -103,8 +107,6 @@ body {
 ::selection { background: rgba(29,184,96,.22); }
 a { color: var(--accent-strong); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-canvas { font-variant-numeric: tabular-nums; }
 
 /* ── Barre du haut : pleine largeur comme avant, en verre léger ──────────── */
 header.site-header {
@@ -171,20 +173,12 @@ nav.main-nav a:hover { background: var(--accent-soft); color: var(--text-primary
 .stat-strip .stat { border-left-color: var(--accent); }
 
 /* ── Contrôles : pilules ─────────────────────────────────────────────────── */
-.table-toggle, .toggle-btn {
+.table-toggle {
   border-radius: 999px; padding: 6px 12px;
   background: var(--control-bg); border-color: var(--card-border);
   font-weight: 500;
 }
 .table-toggle:hover { border-color: var(--accent); color: var(--accent-strong); }
-.toggle-btn { padding: 5px 13px 5px 10px; font-size: 13px; }
-.toggle-btn:hover { border-color: var(--cat-color); color: var(--text-primary); }
-.toggle-btn[aria-pressed="true"] { border-color: var(--cat-color); background: color-mix(in srgb, var(--cat-color) 10%, var(--control-bg)); }
-/* Barre des catégories en verre léger, comme la barre du haut */
-.filter-bar {
-  background: var(--header-bg);
-  -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px);
-}
 
 /* ── Pied de page ────────────────────────────────────────────────────────── */
 footer.site-footer a { color: var(--text-secondary); }
@@ -235,7 +229,7 @@ nav.main-nav a[aria-current="location"] { background: var(--accent-soft); color:
 @media print {
   :root { --page: #fff; --card-bg: #fff; }
   html, body { background: #fff !important; color: #000; }
-  header.site-header, .skip-link, .topbar-profile, .table-toggle, .filter-bar,
+  header.site-header, .skip-link, .topbar-profile, .table-toggle,
   .anchor-link, footer.site-footer a[href$="confidentialite.html"] { display: none !important; }
   .card, .kpi-card, .callout {
     background: #fff !important; box-shadow: none !important;
@@ -250,6 +244,25 @@ nav.main-nav a[aria-current="location"] { background: var(--accent-soft); color:
   .source-tag a::after, .src-name a::after { content: " (" attr(href) ")"; font-size: 10px; word-break: break-all; }
   @page { margin: 14mm; }
 }
+/* ── Fin du bloc commun du style D ── */
+
+/* ── Propre à dechets-montreal (après le bloc commun) ────────────────────── */
+canvas { font-variant-numeric: tabular-nums; }
+/* Boutons des catégories : pilules comme .table-toggle, teintés par --cat-color */
+.toggle-btn {
+  border-radius: 999px; padding: 6px 12px;
+  background: var(--control-bg); border-color: var(--card-border);
+  font-weight: 500;
+}
+.toggle-btn { padding: 5px 13px 5px 10px; font-size: 13px; }
+.toggle-btn:hover { border-color: var(--cat-color); color: var(--text-primary); }
+.toggle-btn[aria-pressed="true"] { border-color: var(--cat-color); background: color-mix(in srgb, var(--cat-color) 10%, var(--control-bg)); }
+/* Barre des catégories en verre léger, comme la barre du haut */
+.filter-bar {
+  background: var(--header-bg);
+  -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px);
+}
+@media print { .filter-bar { display: none !important; } }
 
 /* ── Titre dans la barre : apparaît quand le grand titre sort de l'écran ─────
    js/titre-barre.js pose .titre-en-vue sur la barre tant que le grand titre
