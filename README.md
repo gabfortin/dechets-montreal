@@ -90,8 +90,12 @@ sans relancer le script.
 | `genTables.py` | Agrégation (Python, bibliothèque standard seulement) |
 | `matieres-residuelles-bilan-massique.csv` | Source (Ville de Montréal) |
 | `data/bilan-massique.json` | Généré par `genTables.py` : ne pas modifier à la main |
-| `css/style.css` | Mise en page et palette des catégories (`--mat-*`) |
+| `css/style-d.css` | Base commune du style D (copie de `outils/communs/style-d.css`, ne pas modifier ici) |
+| `css/style.css` | Propre au site : palette des catégories (`--mat-*`), barre des catégories, grilles |
 | `css/hybride.css` | Habillage du style D (copié d'artm-data) et blocs communs |
+| `js/chargement.js`, `css/chargement.css` | Animation d'attente : base commune (copie de `outils/communs/`) |
+| `css/chargement-bac.css` | Scène d'attente : bac de tri qui se remplit |
+| `js/style-d.js` | Utilitaires communs du style D (copie de `outils/communs/style-d.js`) |
 | `js/main.js` | Graphiques Chart.js, filtres, tableaux |
 | `js/apropos.js`, `js/titre-barre.js` | Composants communs (bouton « i », titre dans la barre) |
 | `img/gabriel-fortin.jpg`, `img/apercu.jpg` | Photo de la barre du haut, aperçu de partage (1200 × 630) |
@@ -126,15 +130,15 @@ Aucun cookie, aucun stockage local.
 | Quand | Ce qui est envoyé | À qui |
 |---|---|---|
 | Chaque visite | Page, site d'origine, appareil, pays | GoatCounter (mesure d'audience anonyme) |
-| Chaque visite | Requêtes ordinaires du navigateur | GitHub Pages, jsDelivr (Chart.js), Google Fonts (Inter) |
+| Chaque visite | Requêtes ordinaires du navigateur | GitHub Pages (Chart.js et la police Inter sont hébergés avec le site) |
 
 Détails : [confidentialite.html](confidentialite.html), à mettre à jour (avec
 sa date) si un service externe est ajouté.
 
 ## Crédits
 
-- [Chart.js](https://www.chartjs.org) 4.4.4 (MIT), chargé depuis jsDelivr
-- Police [Inter](https://rsms.me/inter/) (SIL OFL 1.1), depuis Google Fonts
+- [Chart.js](https://www.chartjs.org) 4.4.4 (MIT), hébergé dans `vendor/chartjs/` (modèle commun `outils/communs/chartjs/`)
+- Police [Inter](https://rsms.me/inter/) (SIL OFL 1.1), hébergée dans `fonts/` (modèle commun `outils/communs/polices/`)
 - Données © Ville de Montréal (CC BY 4.0)
 
 ## Auteur

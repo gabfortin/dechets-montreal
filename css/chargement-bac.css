@@ -1,0 +1,46 @@
+/* ── Scène d’attente « bac de tri » (base : css/chargement.css, modèle outils/communs/) ──
+   Des déchets aux couleurs des catégories (--mat-*) tombent et rebondissent
+   dans le bac, qui se remplit par couches ; le couvercle s'ouvre et claque. */
+.ch-bac .ch-scene { border-radius: 28px; }
+.b-bac {
+  left: 24%; right: 24%; bottom: 10%; height: 50%;
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+  background: rgba(var(--ch-rgb), .14);
+  box-shadow: inset 0 0 0 3px var(--ch-accent);
+  overflow: hidden;
+}
+.b-bac::before {                                    /* symbole de recyclage */
+  content: "♻"; position: absolute; left: 50%; top: 22%; transform: translateX(-50%);
+  font-size: 22px; color: rgba(var(--ch-rgb), .55); z-index: 2;
+}
+.b-couche { position: absolute; left: 0; right: 0; bottom: 0; height: 0; animation: b-monte 3.2s cubic-bezier(.2, .9, .3, 1.2) infinite; }
+.b-c1 { background: var(--mat-ordures, #ef4444); --b-h: 24%; }
+.b-c2 { background: var(--mat-recyclables, #3b82f6); --b-h: 46%; animation-delay: .25s; }
+.b-c3 { background: var(--mat-organiques, #22c55e); --b-h: 64%; animation-delay: .5s; }
+.b-c4 { background: var(--mat-crd, #f97316); --b-h: 80%; animation-delay: .75s; }
+.b-c1 { z-index: 4; } .b-c2 { z-index: 3; } .b-c3 { z-index: 2; } .b-c4 { z-index: 1; }
+.b-couvercle {
+  left: 20%; right: 20%; top: 36%; height: 7%; border-radius: 6px;
+  background: var(--ch-accent); box-shadow: 0 0 12px rgba(var(--ch-rgb), .6);
+  transform-origin: 6% 100%;
+  animation: b-claque 1.6s cubic-bezier(.3, 1.6, .5, 1) infinite;
+}
+.b-objet { top: 0; width: 12%; aspect-ratio: 1; border-radius: 3px; opacity: 0; animation: b-tombe 1.6s cubic-bezier(.4, 0, .6, 1) infinite; }
+.b-o1 { left: 34%; background: var(--mat-recyclables, #3b82f6); border-radius: 50%; }
+.b-o2 { left: 50%; background: var(--mat-organiques, #22c55e); animation-delay: .4s; transform: rotate(20deg); }
+.b-o3 { left: 42%; background: var(--mat-crd, #f97316); animation-delay: .8s; border-radius: 2px 8px; }
+.b-o4 { left: 56%; background: var(--mat-rdd, #a855f7); animation-delay: 1.2s; border-radius: 50%; width: 9%; }
+.b-o1, .b-o2, .b-o3, .b-o4 { box-shadow: 0 0 8px rgba(255, 255, 255, .6); }
+@keyframes b-monte { 0% { height: 0; } 60%, 92% { height: var(--b-h); } 100% { height: var(--b-h); opacity: .3; } }
+@keyframes b-claque { 0%, 20% { transform: rotate(0); } 32% { transform: rotate(-34deg); } 58% { transform: rotate(-34deg); } 70% { transform: rotate(4deg); } 78%, 100% { transform: rotate(0); } }
+@keyframes b-tombe {
+  0% { transform: translateY(-20%) rotate(0); opacity: 0; }
+  12% { opacity: 1; }
+  55% { transform: translateY(380%) rotate(160deg); opacity: 1; }
+  64% { transform: translateY(330%) rotate(190deg); }
+  76% { transform: translateY(420%) rotate(220deg); opacity: 1; }
+  90%, 100% { transform: translateY(460%) rotate(240deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .b-c1 { height: 24%; } .b-c2 { height: 46%; } .b-c3 { height: 64%; } .b-c4 { height: 80%; }
+}

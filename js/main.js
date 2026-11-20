@@ -3,42 +3,12 @@
 /* ===========================================================================
    Matières résiduelles Montréal — lit data/bilan-massique.json (produit par
    genTables.py) et dessine un graphique par territoire.
-   Utilitaires repris d'artm-data/js/main.js (style D, DESIGN-PAGES.md).
+   Utilitaires communs (minus, fr, fetchJSON, cssVar, el, initNavEnhancements)
+   dans js/style-d.js (modèle outils/communs/style-d.js), chargé avant.
    =========================================================================== */
 
-/* Nombres à la française : virgule décimale, espace insécable pour les
-   milliers, vrai signe moins « − » (U+2212) plutôt que le trait d'union. */
-function minus(str) {
-  return String(str).replace(/(^|[\s(  →])-(?=\d)/g, "$1−");
-}
-function fr(n, d = 0) {
-  return minus(Number(n).toLocaleString("fr-CA", { minimumFractionDigits: d, maximumFractionDigits: d }));
-}
 const tonnes = (n) => `${fr(n)} t`;
 if (window.Chart) Chart.defaults.locale = "fr-CA";
-
-async function fetchJSON(path) {
-  const res = await fetch(path, { cache: "no-cache" });
-  if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
-  return res.json();
-}
-
-function cssVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-function el(tag, attrs = {}, children = []) {
-  const node = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (k === "class") node.className = v;
-    else node.setAttribute(k, v);
-  }
-  for (const c of [].concat(children)) {
-    if (c == null) continue;
-    node.appendChild(typeof c === "string" ? document.createTextNode(minus(c)) : c);
-  }
-  return node;
-}
 
 /* « 2012 à 2019 », « Agglomération de Montréal, Ville de Montréal et Écocentres » */
 function frList(items) {
@@ -76,42 +46,6 @@ function initTheme() {
   window.addEventListener("afterprint", () => { document.documentElement.classList.remove("print-light"); redrawAll(); });
 }
 
-/* Menu qui suit la lecture + lien direct vers chaque section */
-function initNavEnhancements() {
-  const links = new Map();
-  document.querySelectorAll('nav.main-nav a[href^="#"]').forEach((a) => links.set(a.getAttribute("href").slice(1), a));
-  const sections = [...document.querySelectorAll("section.panel[id]")].filter((sec) => links.has(sec.id));
-  if ("IntersectionObserver" in window && sections.length) {
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        links.forEach((a) => a.removeAttribute("aria-current"));
-        links.get(e.target.id).setAttribute("aria-current", "location");
-      }
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    sections.forEach((sec) => io.observe(sec));
-  }
-
-  const live = el("p", { class: "sr-only", "aria-live": "polite" });
-  document.body.appendChild(live);
-  document.querySelectorAll("section.panel[id] .section-head h2").forEach((h2) => {
-    const id = h2.closest("section.panel").id;
-    const btn = el("button", { type: "button", class: "anchor-link", title: "Copier le lien vers cette section", "aria-label": `Copier le lien vers la section « ${h2.textContent.trim()} »` }, "#");
-    btn.addEventListener("click", () => {
-      const url = `${location.origin}${location.pathname}#${id}`;
-      history.replaceState(null, "", `#${id}`);
-      const done = () => {
-        btn.textContent = "Lien copié";
-        btn.classList.add("copied");
-        live.textContent = "Lien copié";
-        setTimeout(() => { btn.textContent = "#"; btn.classList.remove("copied"); live.textContent = ""; }, 1800);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done);
-      else done();
-    });
-    h2.appendChild(btn);
-  });
-}
 
 /* ===========================================================================
    Données et graphiques
@@ -349,13 +283,24 @@ function renderMethodo() {
   fresh.hidden = false;
 }
 
+/* Animation d'attente (base commune js/chargement.js, scène css/chargement-bac.css) :
+   des déchets aux couleurs des catégories tombent dans le bac de tri. */
+const SCENE_BAC = '<span class="b-objet b-o1"></span><span class="b-objet b-o2"></span><span class="b-objet b-o3"></span>' +
+  '<span class="b-objet b-o4"></span><span class="b-bac"><i class="b-couche b-c4"></i><i class="b-couche b-c3"></i>' +
+  '<i class="b-couche b-c2"></i><i class="b-couche b-c1"></i></span><span class="b-couvercle"></span>';
+
 async function main() {
   initTheme();
   initNavEnhancements();
+  const attente = window.Chargement && Chargement.creer({
+    scene: SCENE_BAC, classe: "ch-bac",
+    titre: "Chargement du bilan massique…", detail: "Arrondissements et villes liées de l'agglomération",
+  });
   try {
     DATA = await fetchJSON("data/bilan-massique.json");
   } catch (err) {
     console.error(err);
+    if (attente) attente.fermer();
     document.getElementById("kpi-grid").replaceChildren(el("p", { class: "callout gap" },
       "Impossible de charger les données. Réessayez dans quelques instants."));
     return;
@@ -374,6 +319,7 @@ async function main() {
   });
   for (const card of cards) { card.build(); updateSub(card); }
   registerRedraw(() => cards.forEach((c) => c.build()));
+  if (attente) { attente.fermer(); Chargement.arrivee(document.getElementById("kpi-grid")); }
 }
 
 main();
