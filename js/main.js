@@ -279,7 +279,8 @@ function renderMethodo() {
   }
 
   const fresh = document.getElementById("hero-freshness");
-  fresh.textContent = `Données de ${meta.annees[0]} à ${meta.annees.at(-1)} · mises à jour à la main quand la Ville publie un nouveau fichier · page générée le ${dateLongue(meta.genere_le)}`;
+  fresh.textContent = `Données de ${meta.annees[0]} à ${meta.annees.at(-1)} · mises à jour à la main quand la Ville publie un nouveau fichier`;
+  fill("genere-le", dateLongue(meta.genere_le));
   fresh.hidden = false;
 }
 

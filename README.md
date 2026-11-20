@@ -99,6 +99,7 @@ sans relancer le script.
 | `js/main.js` | Graphiques Chart.js, filtres, tableaux |
 | `js/apropos.js`, `js/titre-barre.js` | Composants communs (bouton « i », titre dans la barre) |
 | `img/gabriel-fortin.jpg`, `img/apercu.jpg` | Photo de la barre du haut, aperçu de partage (1200 × 630) |
+| `favicon.svg`, `favicon.png`, `apple-touch-icon.png` | Icônes du site (bac de tri par couches), dessinées par `~/Developer/outils/icones/icones_sites.py` |
 
 Style D de [DESIGN-PAGES.md](../DESIGN-PAGES.md) (référence : artm-data).
 Mode sombre selon l'appareil ; les graphiques lisent leurs couleurs dans les
