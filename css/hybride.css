@@ -323,7 +323,7 @@ canvas { font-variant-numeric: tabular-nums; }
 
 /* Couleurs du bouton « i » et de la modale « À propos » (bloc commun ci-dessous) */
 :root {
-  --gf-info-1: #1DB860; --gf-info-2: #129a4c; --gf-info-glow: rgba(18,154,76,.6);
+  --gf-info-1: #1DB860; --gf-info-2: #129a4c; --gf-info-trait: var(--accent-strong);
   --gf-info-fond: var(--surface-1); --gf-info-bordure: var(--card-border);
   --gf-info-rayon: var(--radius-lg); --gf-info-fermer: var(--surface-2);
   --gf-info-titre: var(--text-primary); --gf-info-texte: var(--text-secondary); --gf-info-lien: var(--accent-strong);
@@ -336,27 +336,26 @@ canvas { font-variant-numeric: tabular-nums; }
 @media (max-width: 760px) { .site-header .brand { flex: 1 1 auto; } }
 
 /* ── Bouton « i » + modale « À propos » ──────────────────────────────────────
-   Patron des cartes (MAP-DESIGN-SYSTEM.md), sans l'anneau qui pulse : la
-   pulsation est réservée aux cartes (DESIGN-PAGES.md). Bloc identique dans
-   tous les sites hors cartes ; seules les couleurs --gf-info-* (définies
-   juste au-dessus) changent d'un site à l'autre. Script : apropos.js. */
+   Version sobre (novembre 2026), la même que sur les cartes
+   (MAP-DESIGN-SYSTEM.md) : cercle à contour de 1,5 px, fond transparent, sans
+   dégradé, ombre, pulsation ni grossissement ; teinte légère au survol.
+   Bloc identique dans tous les sites hors cartes ; seules les variables
+   --gf-info-* (définies juste au-dessus) changent d'un site à l'autre.
+   --gf-info-trait : couleur du contour et du « i » (repli : --gf-info-2) ;
+   la faire suivre le mode sombre. Script : apropos.js. */
 .gf-info-btn {
   position: relative;
   display: flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
-  border: none; padding: 0;
-  background: linear-gradient(140deg, var(--gf-info-1), var(--gf-info-2));
-  color: #fff; cursor: pointer;
-  box-shadow: 0 4px 14px -4px var(--gf-info-glow), inset 0 1px 0 rgba(255,255,255,.45);
-  transition: transform .2s cubic-bezier(.22,.68,0,1), box-shadow .2s cubic-bezier(.22,.68,0,1);
+  padding: 0;
+  border: 1.5px solid currentColor;   /* même épaisseur que « Me soutenir » (don.js) */
+  background: transparent;
+  color: var(--gf-info-trait, var(--gf-info-2)); cursor: pointer;
+  transition: background-color .2s ease;
 }
 .gf-info-btn svg { width: 16px; height: 16px; }
-.gf-info-btn:hover {
-  box-shadow: 0 8px 22px -4px var(--gf-info-glow), inset 0 1px 0 rgba(255,255,255,.5);
-  transform: translateY(-1px) scale(1.1);
-}
-.gf-info-btn:active { transform: scale(.94); }
-.gf-info-btn:focus-visible { outline: 2px solid var(--gf-info-2); outline-offset: 3px; }
+.gf-info-btn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.gf-info-btn:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 .gf-info-overlay {
   position: fixed; inset: 0; z-index: 2000;
   background: rgba(10,16,13,.45);
@@ -404,7 +403,6 @@ canvas { font-variant-numeric: tabular-nums; }
 }
 @media (prefers-reduced-motion: reduce) {
   .gf-info-btn, .gf-info-panel { transition: none; }
-  .gf-info-btn:hover { transform: none; }
   .gf-info-panel { transform: none; }
 }
 @media print { .gf-info-btn, .gf-info-overlay { display: none !important; } }
