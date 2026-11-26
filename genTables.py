@@ -50,8 +50,8 @@ NAME_MAP = {
 
 CRD_MATIERE = "Résidus de construction, rénovation, démolition et encombrants"
 
-# Catégories affichées au chargement (les autres sont masquées)
-DEFAULT_VISIBLE = {CRD_MATIERE}
+# Catégories cochées au chargement (clés courtes) ; les autres sont décochées
+DEFAULT_VISIBLE = {"crd", "recyclables", "organiques", "rdd"}
 
 FEATURED = "Le Plateau-Mont-Royal"
 
@@ -159,7 +159,7 @@ def build_json(mesures, territoires, annees):
                         "libelle": MATIERES[m][1],
                         "couleur": MATIERES[m][2],
                         "nom_source": m,
-                        "visible": m in DEFAULT_VISIBLE,
+                        "visible": MATIERES[m][0] in DEFAULT_VISIBLE,
                     }
                     for m in matieres
                 ],

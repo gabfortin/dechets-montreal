@@ -52,7 +52,7 @@ function initTheme() {
    =========================================================================== */
 
 let DATA = null;
-let mesure = "generee";              // clé de DATA.mesures affichée (« generee » ou « collectee »)
+let mesure = "collectee";            // clé de DATA.mesures affichée (« generee » ou « collectee »)
 let M = null;                       // DATA.mesures[mesure]
 const visible = new Set();          // clés des catégories affichées
 const cards = [];                   // { nom, chart, sub, wrap, toggle, titre, canvas, build }
@@ -322,7 +322,7 @@ function renderMethodo() {
 }
 
 function choisirMesure(cle) {
-  mesure = DATA.mesures[cle] ? cle : "generee";
+  mesure = DATA.mesures[cle] ? cle : "collectee";
   M = DATA.mesures[mesure];
   // Garde les catégories affichées qui existent dans cette mesure ; sinon celles par défaut
   const gardees = [...visible].filter((c) => M.matieres.some((m) => m.cle === c));
@@ -333,7 +333,7 @@ function choisirMesure(cle) {
 function changerMesure(cle) {
   choisirMesure(cle);
   const url = new URL(location.href);
-  if (mesure === "generee") url.searchParams.delete("mesure"); else url.searchParams.set("mesure", mesure);
+  if (mesure === "collectee") url.searchParams.delete("mesure"); else url.searchParams.set("mesure", mesure);
   history.replaceState(null, "", url);
   renderMesures();
   renderFilters();
@@ -370,7 +370,7 @@ async function main() {
       "Impossible de charger les données. Réessayez dans quelques instants."));
     return;
   }
-  choisirMesure(new URLSearchParams(location.search).get("mesure") || "generee");
+  choisirMesure(new URLSearchParams(location.search).get("mesure") || "collectee");
 
   renderMesures();
   renderKpis();

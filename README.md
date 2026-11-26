@@ -13,7 +13,7 @@ qui veulent comparer les territoires ou suivre l'évolution d'un arrondissement.
 | Section | Ce qu'elle montre |
 |---|---|
 | **En-tête** | Chiffres clés du Plateau-Mont-Royal pour la dernière année publiée, date des données |
-| **Mesure** | Choix « Générée » (4 catégories) ou « Collectée » (9 catégories) pour toute la page ; lien direct `?mesure=collectee` |
+| **Mesure** | Choix « Collectée » (9 catégories, par défaut) ou « Générée » (4 catégories) pour toute la page ; lien direct `?mesure=generee`. CRD & encombrants, Recyclables, Organiques et RDD cochés au chargement |
 | **Catégories affichées** | Boutons qui affichent ou masquent une catégorie dans **tous** les graphiques |
 | **Le Plateau-Mont-Royal** | Graphique en vedette (barres empilées par année) |
 | **Tous les arrondissements et villes liées** | Un graphique par territoire, ordre alphabétique |
