@@ -97,6 +97,14 @@
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.5l4.5-5' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 10px no-repeat;
 }
 
+/* Sélecteur de mesure (générée / collectée) : deux boutons collés, celui choisi plein */
+.segment-mesure { display: inline-flex; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); overflow: hidden; margin-right: 10px; }
+.segment-mesure button { min-height: 32px; padding: 5px 12px; border: 0; background: none; color: var(--text-secondary);
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+.segment-mesure button + button { border-left: 1px solid var(--border-strong); }
+.segment-mesure button[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1, #fff); font-weight: 600; }
+.segment-mesure button:focus-visible { outline: 2px solid var(--accent, currentColor); outline-offset: -2px; }
+
 /* Grille des arrondissements */
 .boroughs-grid {
   display: grid;

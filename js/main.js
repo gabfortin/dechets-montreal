@@ -52,10 +52,17 @@ function initTheme() {
    =========================================================================== */
 
 let DATA = null;
+let mesure = "generee";              // clé de DATA.mesures affichée (« generee » ou « collectee »)
+let M = null;                       // DATA.mesures[mesure]
 const visible = new Set();          // clés des catégories affichées
-const cards = [];                   // { territoire, chart, sub, build }
+const cards = [];                   // { nom, chart, sub, wrap, toggle, titre, canvas, build }
 
-function matiere(cle) { return DATA.matieres.find((m) => m.cle === cle); }
+/* « générées » / « collectées » : la mesure dans les phrases */
+const MOT = { generee: "générées", collectee: "collectées" };
+const mot = () => MOT[mesure] || M.libelle.toLowerCase();
+
+function matiere(cle) { return M.matieres.find((m) => m.cle === cle); }
+function territoire(nom) { return M.territoires.find((t) => t.nom === nom); }
 
 /* Dernière année où au moins une catégorie affichée a une valeur */
 function latestVisible(t) {
@@ -72,7 +79,7 @@ function latestVisible(t) {
 }
 
 function updateSub(card) {
-  const last = latestVisible(card.territoire);
+  const last = latestVisible(territoire(card.nom));
   card.sub.textContent = "";
   if (!last) {
     card.sub.append("Aucune donnée pour les catégories affichées.");
@@ -85,7 +92,7 @@ function chartConfig(t) {
   const text = cssVar("--text-primary");
   const muted = cssVar("--text-muted");
   const grid = cssVar("--gridline");
-  const datasets = DATA.matieres
+  const datasets = M.matieres
     .filter((m) => t.valeurs[m.cle])
     .map((m) => {
       const color = cssVar(m.couleur) || cssVar("--mat-autre");
@@ -144,7 +151,7 @@ function chartConfig(t) {
           grid: { color: grid },
           border: { display: false },
           ticks: { color: muted, font: { size: 11 }, callback: (v) => fr(v) },
-          title: { display: true, text: "Tonnes", color: muted, font: { size: 11 } },
+          title: { display: true, text: `Tonnes ${mot()}`, color: muted, font: { size: 11 } },
         },
       },
     },
@@ -152,9 +159,9 @@ function chartConfig(t) {
 }
 
 function buildTable(wrap, t) {
-  const cles = DATA.matieres.filter((m) => t.valeurs[m.cle]).map((m) => m.cle);
+  const cles = M.matieres.filter((m) => t.valeurs[m.cle]).map((m) => m.cle);
   const table = el("table", { class: "data-table" });
-  table.appendChild(el("caption", { class: "sr-only" }, `Tonnes générées par année et par catégorie, ${t.nom}`));
+  table.appendChild(el("caption", { class: "sr-only" }, `Tonnes ${mot()} par année et par catégorie, ${t.nom}`));
   table.appendChild(el("thead", {}, el("tr", {}, [
     el("th", { scope: "col" }, "Année"),
     ...cles.map((c) => el("th", { scope: "col", title: matiere(c).nom_source }, matiere(c).libelle)),
@@ -169,14 +176,19 @@ function buildTable(wrap, t) {
   wrap.appendChild(table);
 }
 
+function titreCarte(nom, featured) {
+  return featured ? `Tonnes ${mot()} par catégorie, ${DATA.meta.annees[0]}–${DATA.meta.annees.at(-1)}` : nom;
+}
+
 function makeCard(t, i, featured) {
   const canvasId = `chart-${i}`;
   const tableId = `table-${i}`;
-  const canvas = el("canvas", { id: canvasId, role: "img", "aria-label": `Graphique à barres empilées des tonnes générées par année, ${t.nom}. Données détaillées dans le tableau.` });
+  const canvas = el("canvas", { id: canvasId, role: "img" });
   const sub = el("p", { class: "card-sub" });
   const wrap = el("div", { class: "data-table-wrap", id: tableId });
+  const titre = el("h3", {}, titreCarte(t.nom, featured));
   const toggle = el("button", { type: "button", class: "table-toggle", "aria-expanded": "false", "aria-controls": tableId }, "Voir les données en tableau");
-  toggle._buildTable = () => { if (!wrap.firstChild) buildTable(wrap, t); };
+  toggle._buildTable = () => { if (!wrap.firstChild) buildTable(wrap, territoire(t.nom)); };
   toggle.addEventListener("click", () => {
     toggle._buildTable();
     const open = wrap.classList.toggle("open");
@@ -185,18 +197,18 @@ function makeCard(t, i, featured) {
   });
 
   const node = el("article", { class: "card" }, [
-    featured ? el("h3", {}, `Tonnes générées par catégorie, ${DATA.meta.annees[0]}–${DATA.meta.annees.at(-1)}`)
-             : el("h3", {}, t.nom),
+    titre,
     sub,
     el("div", { class: `chart-box ${featured ? "h-320" : "h-220"}` }, canvas),
     toggle,
     wrap,
   ]);
 
-  const card = { territoire: t, sub, chart: null };
+  const card = { nom: t.nom, featured, sub, wrap, titre, canvas, chart: null };
   card.build = () => {
     if (card.chart) card.chart.destroy();
-    card.chart = new Chart(canvas, chartConfig(t));
+    canvas.setAttribute("aria-label", `Graphique à barres empilées des tonnes ${mot()} par année, ${t.nom}. Données détaillées dans le tableau.`);
+    card.chart = new Chart(canvas, chartConfig(territoire(t.nom)));
   };
   cards.push(card);
   return node;
@@ -214,7 +226,8 @@ function applyVisibility() {
 
 function renderFilters() {
   const bar = document.getElementById("filters");
-  for (const m of DATA.matieres) {
+  bar.querySelectorAll(".toggle-btn").forEach((b) => b.remove());
+  for (const m of M.matieres) {
     const btn = el("button", {
       type: "button",
       class: "toggle-btn",
@@ -231,12 +244,26 @@ function renderFilters() {
   }
 }
 
+/* Sélecteur de mesure (générée / collectée) : jamais les deux dans un même graphique */
+function renderMesures() {
+  const box = document.getElementById("mesures");
+  box.textContent = "";
+  for (const [cle, m] of Object.entries(DATA.mesures)) {
+    const btn = el("button", { type: "button", "aria-pressed": String(cle === mesure), title: `Colonne ${m.colonne}` },
+      cle === "generee" ? "Générée" : cle === "collectee" ? "Collectée" : m.libelle);
+    btn.addEventListener("click", () => { if (cle !== mesure) changerMesure(cle); });
+    box.appendChild(btn);
+  }
+}
+
 function renderKpis() {
-  const t = DATA.territoires.find((x) => x.nom === DATA.meta.vedette);
+  const t = territoire(DATA.meta.vedette);
   const annees = DATA.meta.annees;
   const grid = document.getElementById("kpi-grid");
   grid.textContent = "";
-  for (const m of DATA.matieres) {
+  let n = 0;
+  for (const m of M.matieres) {
+    if (n >= 4) break;   // les quatre premières catégories (CRD, puis par volume)
     const vals = t.valeurs[m.cle];
     if (!vals) continue;
     const i = vals.findLastIndex((v) => v != null);
@@ -244,44 +271,81 @@ function renderKpis() {
     const prev = i > 0 && vals[i - 1] != null ? `${annees[i - 1]} : ${tonnes(vals[i - 1])}` : "";
     grid.appendChild(el("div", { class: "kpi-card" }, [
       el("div", { class: "kpi-value" }, tonnes(vals[i])),
-      el("div", { class: "kpi-label" }, `${m.libelle}, ${annees[i]}`),
+      el("div", { class: "kpi-label" }, `${m.libelle}, ${annees[i]} (${mot().replace(/s$/, "")})`),
       el("div", { class: "kpi-note" }, `${t.nom}${prev ? ` · ${prev}` : ""}`),
     ]));
+    n++;
   }
 }
 
+/* Textes qui dépendent de la mesure */
+function renderTextesMesure() {
+  fill("mesure-mot", mot());
+  const sans = M.sans_donnees || [];
+  document.getElementById("sans-donnees").textContent = sans.length
+    ? `En quantité ${mot().replace(/es$/, "e")}, aucune valeur n'est publiée par territoire pour ${sans.length > 1 ? "ces catégories" : "cette catégorie"} : ` +
+      `${frList(sans.map((m) => `« ${m.nom_source} »`))} ; ${sans.length > 1 ? "elles n'apparaissent" : "elle n'apparaît"} qu'en quantité collectée.`
+    : "";
+}
+
 function renderMethodo() {
-  const { meta, matieres } = DATA;
-  fill("nb-territoires", String(DATA.territoires.length));
+  const { meta } = DATA;
+  fill("nb-territoires", String(M.territoires.length));
   fill("premiere-annee", meta.annees[0]);
   fill("derniere-annee", meta.annees.at(-1));
   fill("exclus", frList(meta.exclus));
 
-  const rdd = matieres.find((m) => m.cle === "rdd");
-  if (rdd) {
-    const ans = meta.annees.filter((_, i) => DATA.territoires.some((t) => t.valeurs.rdd && t.valeurs.rdd[i] != null));
+  const gen = DATA.mesures.generee;
+  if (gen && gen.matieres.some((m) => m.cle === "rdd")) {
+    const ans = meta.annees.filter((_, i) => gen.territoires.some((t) => t.valeurs.rdd && t.valeurs.rdd[i] != null));
     fill("rdd-periode", `${ans[0]} à ${ans.at(-1)}`);
   }
 
-  const sans = meta.sans_donnees || [];
-  if (sans.length) {
-    document.getElementById("sans-donnees").textContent =
-      `Aucune quantité générée n'est publiée par territoire pour ${sans.length > 1 ? "ces catégories" : "cette catégorie"} : ` +
-      `${frList(sans.map((m) => `« ${m.nom_source} »`))}. Elles n'apparaissent donc pas.`;
-  }
-
+  // Toutes les catégories de la source (union des deux mesures)
   const list = document.getElementById("categories-list");
-  for (const m of matieres) {
-    list.appendChild(el("div", { class: "src-item" }, [
-      el("span", { class: "src-name" }, m.libelle),
-      el("span", { class: "src-meta" }, m.nom_source),
-    ]));
+  const vues = new Set();
+  for (const mes of Object.values(DATA.mesures)) {
+    for (const m of mes.matieres) {
+      if (vues.has(m.cle)) continue;
+      vues.add(m.cle);
+      list.appendChild(el("div", { class: "src-item" }, [
+        el("span", { class: "src-name" }, m.libelle),
+        el("span", { class: "src-meta" }, m.nom_source),
+      ]));
+    }
   }
 
   const fresh = document.getElementById("hero-freshness");
   fresh.textContent = `Données de ${meta.annees[0]} à ${meta.annees.at(-1)} · mises à jour à la main quand la Ville publie un nouveau fichier`;
   fill("genere-le", dateLongue(meta.genere_le));
   fresh.hidden = false;
+}
+
+function choisirMesure(cle) {
+  mesure = DATA.mesures[cle] ? cle : "generee";
+  M = DATA.mesures[mesure];
+  // Garde les catégories affichées qui existent dans cette mesure ; sinon celles par défaut
+  const gardees = [...visible].filter((c) => M.matieres.some((m) => m.cle === c));
+  visible.clear();
+  (gardees.length ? gardees : M.matieres.filter((m) => m.visible).map((m) => m.cle)).forEach((c) => visible.add(c));
+}
+
+function changerMesure(cle) {
+  choisirMesure(cle);
+  const url = new URL(location.href);
+  if (mesure === "generee") url.searchParams.delete("mesure"); else url.searchParams.set("mesure", mesure);
+  history.replaceState(null, "", url);
+  renderMesures();
+  renderFilters();
+  renderKpis();
+  renderTextesMesure();
+  for (const card of cards) {
+    card.titre.textContent = titreCarte(card.nom, card.featured);
+    card.wrap.textContent = "";                     // tableau refait à la demande
+    if (card.wrap.classList.contains("open")) buildTable(card.wrap, territoire(card.nom));
+    card.build();
+    updateSub(card);
+  }
 }
 
 /* Animation d'attente (base commune js/chargement.js, scène css/chargement-bac.css) :
@@ -306,15 +370,17 @@ async function main() {
       "Impossible de charger les données. Réessayez dans quelques instants."));
     return;
   }
-  DATA.matieres.filter((m) => m.visible).forEach((m) => visible.add(m.cle));
+  choisirMesure(new URLSearchParams(location.search).get("mesure") || "generee");
 
+  renderMesures();
   renderKpis();
   renderFilters();
   renderMethodo();
+  renderTextesMesure();
 
   const featured = document.getElementById("featured");
   const boroughs = document.getElementById("boroughs");
-  DATA.territoires.forEach((t, i) => {
+  M.territoires.forEach((t, i) => {
     if (t.nom === DATA.meta.vedette) featured.appendChild(makeCard(t, i, true));
     else boroughs.appendChild(makeCard(t, i, false));
   });

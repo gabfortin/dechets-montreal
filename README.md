@@ -1,8 +1,9 @@
 # Matières résiduelles Montréal — bilan massique
 
-Tableau de bord des tonnes de matières résiduelles **générées** dans chacun
+Tableau de bord des tonnes de matières résiduelles **générées** et
+**collectées** dans chacun
 des 33 arrondissements et villes liées de l'agglomération de Montréal, de 2012
-à 2024, par catégorie. Pour les citoyen·nes, les élu·es et les journalistes
+à 2025, par catégorie. Pour les citoyen·nes, les élu·es et les journalistes
 qui veulent comparer les territoires ou suivre l'évolution d'un arrondissement.
 
 **En ligne :** [dechets.gabfortin.com](https://dechets.gabfortin.com)
@@ -12,10 +13,11 @@ qui veulent comparer les territoires ou suivre l'évolution d'un arrondissement.
 | Section | Ce qu'elle montre |
 |---|---|
 | **En-tête** | Chiffres clés du Plateau-Mont-Royal pour la dernière année publiée, date des données |
+| **Mesure** | Choix « Générée » (4 catégories) ou « Collectée » (9 catégories) pour toute la page ; lien direct `?mesure=collectee` |
 | **Catégories affichées** | Boutons qui affichent ou masquent une catégorie dans **tous** les graphiques |
 | **Le Plateau-Mont-Royal** | Graphique en vedette (barres empilées par année) |
 | **Tous les arrondissements et villes liées** | Un graphique par territoire, ordre alphabétique |
-| **Sources et limites** | Source, colonne utilisée, correspondance des catégories, limites |
+| **Sources et limites** | Source, colonnes utilisées, correspondance des catégories, limites |
 
 Chaque graphique a sa version en tableau (« Voir les données en tableau »).
 
@@ -25,7 +27,7 @@ Chaque graphique a sa version en tableau (« Voir les données en tableau »).
 
 | Source | Producteur, licence | Utilisée pour |
 |---|---|---|
-| [Matières résiduelles — bilan massique](https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique) | Ville de Montréal, CC BY 4.0 | Tout le site. Fichier `matieres-residuelles-bilan-massique.csv` ; colonnes `annee`, `matiere`, `territoire`, `quantite_generee_donnees_agglo` (quantité générée, en tonnes) |
+| [Matières résiduelles — bilan massique](https://donnees.montreal.ca/dataset/matieres-residuelles-bilan-massique) | Ville de Montréal, CC BY 4.0 | Tout le site. Fichier `matieres-residuelles-bilan-massique.csv` ; colonnes `annee`, `matiere`, `territoire`, `quantite_generee_donnees_agglo` (quantité générée) et `quantite_collectee_donnees_agglo` (quantité collectée), en tonnes |
 
 ### Mise à jour
 
@@ -45,13 +47,19 @@ retrouvent la même année.
 
 ### Mises en garde
 
-- **Quantité générée seulement** : les quantités collectées, taux de
-  récupération et données CMM de la source ne sont pas affichés.
+- **Deux mesures, jamais additionnées** (`MESURES` du script, novembre 2026) :
+  quantité générée et quantité collectée, au choix pour toute la page. La
+  quantité collectée est la seule publiée pour les ordures ménagères et les
+  CRD éliminés (tonnes envoyées à l'élimination), les textiles, les
+  électroniques et les RDD et PE. Ses « 0 » (textiles, électroniques) sont
+  gardés tels quels ; les tonnes des écocentres (territoire agrégé exclu) ne
+  sont réparties nulle part. Taux de récupération et données CMM : non
+  affichés.
 - **« NA » dans la source** = aucune valeur : rien dans le graphique, « — »
   dans le tableau. Les RDD ne sont publiés par territoire que de 2012 à 2019 ;
-  plusieurs catégories (ordures ménagères, textiles, électroniques…) n'ont
-  aucune quantité générée par territoire et n'apparaissent pas. La liste est
-  calculée par le script (`meta.sans_donnees`) et affichée dans la page.
+  cinq catégories n'ont aucune quantité générée par territoire et
+  n'apparaissent qu'en quantité collectée. La liste est calculée par le script
+  (`mesures.<mesure>.sans_donnees`) et affichée dans la page.
 - **Territoires agrégés exclus** (`EXCLUDED`) : Agglomération de Montréal,
   Ville de Montréal, Écocentres, Écocentres et collectes itinérantes.
 - **Noms harmonisés** (`NAME_MAP`) : la source écrit certains noms de deux
@@ -61,6 +69,14 @@ retrouvent la même année.
   espace insécable (« 15 523 »). Avant novembre 2026, le script ne retirait
   que les espaces ordinaires et ces 84 valeurs étaient affichées à 0
   (recyclables, organiques et CRD de 2024). Corrigé dans `parse_quantity()`.
+- **Version de juin 2026** (ajoute 2025) : le fichier commence par un BOM
+  (lu en `utf-8-sig`). Les quantités générées de 2012 à 2024 n'ont pas changé
+  ; seules des colonnes non affichées ont été retouchées (ratios arrondis,
+  quantités collectées). En 2025, la quantité collectée s'écrit avec une
+  virgule pour les milliers (« 8,916 », vérifié : même ordre de grandeur que
+  les 9 388 t de 2024) ; `parse_quantity()` n'accepte une virgule que dans
+  cette forme et s'arrête sinon. Le taux s'écrit en fraction (« 0.67 ») :
+  colonne non affichée.
 - **Échelle propre à chaque graphique** : comparer les tonnes, pas la hauteur
   des barres.
 - Initiative indépendante : ni produite ni approuvée par la Ville de Montréal.
